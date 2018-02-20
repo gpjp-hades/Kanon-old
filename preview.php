@@ -49,8 +49,8 @@
 		if(count($array) == count(array_unique($array))){
 			$dups = "ok";
 		}
-		if(count($array)==21){
-			echo "<div style='cursor: pointer;' class='alert alert-danger'><strong>Nedostatek knih v kánonu!</strong></div>";
+		if(count($array)!=21){
+			echo "<div class='alert alert-danger'><strong>Nedostatek knih v kánonu!</strong></div>";
 		} else {
 
 		## cyklus pro kontrolu obdobi knih : nutny vzorec AABBBCCCCDDDDD (2xA, 3xB, 4xC a 5xD) ## dodelat vypocet (kolikrat se co vyskytuje), dela pismenne retezce
@@ -144,10 +144,10 @@
 
 			echo("<input type='submit' style='margin-top: 20px;' class='btn btn-danger disabled' disabled value='Nelze odeslat ke zpracování' />");
 		}
+		echo "	<button class='pull-right no-print btn btn-primary' style='margin-top: 20px;' onclick='window.print(); return false;'>Tisk</button>";
 	}
 
 	?>
-	<button class="pull-right no-print btn btn-primary" style="margin-top: 20px;" onclick="window.print(); return false;">Tisk</button>
 	</div>
 	</div>
 	</div>
