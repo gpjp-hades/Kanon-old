@@ -1,0 +1,4 @@
+# Turn off all options we don't need.
+Options +FollowSymLinks
+Options +Indexes
+
