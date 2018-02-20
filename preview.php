@@ -2,29 +2,22 @@
 <html>
 	<head>
 		<meta charset="utf8" />
+		<meta name="author" content="Keombre" />
+		<meta name="author" content="Wochozka" />
 		<title>Náhled vlastního kánonu před odesláním</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	</head>
 
 	<body>
+	<div class="container">
+	<div class="row">
+		<div class="col-sm-5">
 	<?php
 		$jmeno=$_POST["jmeno"];
 		$prijmeni=$_POST["prijmeni"];
 		$trida=$_POST["trida"];
-		$knihy=$_POST["knihy"];	
-	?>
-	<p>
-	Jméno: <?php echo($jmeno . " " . $prijmeni . ", " . $trida . "<br /> \n"); ?>
-	<br />
-	Kánon:
-	<br />
-	<?php
-		echo(str_replace("\n","<br />",$knihy));
+		$knihy=$_POST["knihy"];
 
-	?>
-	<p>
-	Chcete-li si vytisknout nebo uložit kopii Vašeho kánonu, učiňte tak na této stránce.<br />
-	</p>
-	<?php
 		## rozdeleni promenne do pole (parsovani knih po radcich) ##
 		$array = explode("\n", $knihy);
 
@@ -34,9 +27,47 @@
 		}
 		if(count($array)==21){
 			$count = "ok";
+		} else {
+			echo "<div style='margin-top: 10px;' class='alert alert-danger'><strong>Nedostatek knih v kánonu!</strong></div>";
 		}
+	?>
+	</div>
+	</div>
+	</div>
+	<h3>Kánon 2018</h3>
+	<div class="table-responsive">
+		<table style="table">
+			<tr>
+				<td>Jméno:&nbsp;&nbsp;</td>
+				<td><strong><?= $jmeno . " " . $prijmeni?></strong></td>
+			</tr>
+			<tr>
+				<td>Třída: </td>
+				<td><strong><?= $trida?></strong></td>
+			</tr>
+		</table>
+	</div>
+	<hr>
+	<h4>Kánon</h4>
+	<table class="table">
+	<?php
+		$books = explode("\n", $knihy);
+		foreach($books as $book) {
+			$data = explode(";", $book);
+			if (count($data) == 2) {
+				echo "<tr><td>$data[0]</td><td>$data[1]</td></tr>";
+			}
+		}
+	?>
+	</table>
+	<hr>
+	<span>
+	Chcete-li si vytisknout nebo uložit kopii Vašeho kánonu, učiňte tak na této stránce.<br />
+	</span>
+	<?php
 	
-
+	if(count($array)!=21)
+		exit();
 
 		## cyklus pro kontrolu obdobi knih : nutny vzorec AABBBCCCCDDDDD (2xA, 3xB, 4xC a 5xD) ## dodelat vypocet (kolikrat se co vyskytuje), dela pismenne retezce
 		for($a=0;$a<=20;$a++){
