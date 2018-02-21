@@ -27,7 +27,7 @@
 			<div class="form-group">
 				<label for="book">Školní kánon:</label>
 				<input id="search" class="form-control" placeholder="Vyhledávejte" autofocus></input><br />
-				<select name="book" id="book" style="overflow: auto;" class="form-control" size="26" ondblclick="send('add')">
+				<select name="book" id="book" style="overflow: auto;" class="form-control" size="25" ondblclick="send('add')">
 		<?php
 			foreach($GLOBALS['books'] as $name => $regions) {
 				echo "<optgroup label='$name'>";
@@ -62,5 +62,11 @@
   </div>
 </div>
 </form>
+<hr style="margin-top: 0;">
+<div class="no-print container text-center" style="margin-bottom: 20px;">
+<small style="margin: 0 15px;">Autor: Honza Wijnhorst <a target="_blank" href="https://github.com/keombre">@keombre</a></small>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a><br />
+<small>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.</small>
+</div>
 </body>
 </html>
