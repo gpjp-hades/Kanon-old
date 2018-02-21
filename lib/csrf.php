@@ -34,9 +34,9 @@ class csrf {
 		return false;
 	}
 
-	static function printHTML() {
+	static function printHTML($newLine) {
 		$vals = \lib\csrf::getValues();
 		return "<input type='hidden' name='csrf' value='csrf' />
-		<input type='hidden' name='$vals[0]' value='$vals[1]' />\n";
+$newLine<input type='hidden' name='$vals[0]' value='$vals[1]' />\n";
 	}
 }

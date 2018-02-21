@@ -1,72 +1,93 @@
 <?php \lib\autoloader::getTemplate('header')?>
-  <form id="form" method="POST">
-	<input type="hidden" name="state" id="form_state" />
-	<?=\lib\csrf::printHTML()?>
-  <div class="container">
-  <div class="row">
-    <div class="col-sm-2">
-			<div class="form-group">
-				<label for="name">Jméno:</label>
-				<input type="text" name="name" class="form-control" id="name" value="<?=$_SESSION['vars']['name']?>" required />
+		<form id="form" method="POST">
+			<input type="hidden" name="state" id="form_state" />
+			<?=\lib\csrf::printHTML("\t\t\t")?>
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-2">
+						<div class="form-group">
+							<label for="name">Jméno:</label>
+							<input type="text" name="name" class="form-control" id="name" value="<?=$_SESSION['vars']['name']?>" required />
+						</div>
+						<div class="form-group">
+							<label for="surname">Příjmení:</label>
+							<input type="text" name="surname" class="form-control" id="surname" value="<?=$_SESSION['vars']['surname']?>" required />
+						</div>
+						<div class="form-group">
+							<label for="class">Třída:</label>
+							<select name="class" class="form-control" id="class" required>
+								<option value="" disabled <?= $_SESSION['vars']['class']=="" ?"selected":""?>>Vyberte třídu</option>
+								<option value="a" <?=$_SESSION['vars']['class']=="a"?"selected":""?>>Oktáva A</option>
+								<option value="b" <?=$_SESSION['vars']['class']=="b"?"selected":""?>>Oktáva B</option>
+								<option value="c" <?=$_SESSION['vars']['class']=="c"?"selected":""?>>4. C</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-5">
+						<div class="form-group">
+							<label for="book">Školní kánon:</label>
+							<input id="search" class="form-control" placeholder="Vyhledávejte" autofocus />
+							<br />
+							<select name="book" id="book" style="overflow: auto;" class="form-control" size="25" ondblclick="send('add')">
+<?php
+foreach($GLOBALS['books'] as $name => $regions) {
+	echo "\t\t\t\t\t\t\t\t<optgroup label='$name'>" . PHP_EOL;
+	foreach($regions as $book) {
+		echo "\t\t\t\t\t\t\t\t\t<option value='$book[id]'>$book[author]" . ($book['author'] == ""?"":": ") . "$book[name]</option>" . PHP_EOL;
+	}
+	echo "\t\t\t\t\t\t\t\t</optgroup>" . PHP_EOL;
+}
+?>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<div class="my-buttons">
+							<button class="form-control btn btn-default" onclick="send('add')">
+								Přidat <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+							</button>
+							<button class="form-control btn btn-default" onclick="send('remove')">
+								<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Odebrat
+							</button>
+							<button class="form-control btn btn-danger"	onclick="send('wipe')">
+								<span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Vyprázdnit
+							</button>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<div class="form-group">
+							<label for="myBooks">Můj kánon: (<?=count($_SESSION['books'])?>/<?=\lib\local::BOOKS?>)</label>
+							<select name="myBooks" id="myBooks" style="overflow: auto" class="form-control" size="26" ondblclick="send('remove')">
+<?php
+foreach($GLOBALS['myBooks'] as $name => $regions) {
+	echo "\t\t\t\t\t\t\t\t<optgroup label='$name'>" . PHP_EOL;
+	foreach($regions as $book) {
+		echo "\t\t\t\t\t\t\t\t\t<option value='$book[id]'>$book[author]" . ($book['author'] == ""?"":": ") . "$book[name]</option>" . PHP_EOL;
+	}
+	echo "\t\t\t\t\t\t\t\t</optgroup>" . PHP_EOL;
+}
+?>
+							</select>
+							<br />
+							<button class="form-control btn btn-success" onclick="send('finish')">
+								Dokončit seznam <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							</button>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="form-group">
-				<label for="surname">Příjmení:</label>
-				<input type="text" name="surname" class="form-control" id="surname" value="<?=$_SESSION['vars']['surname']?>" required />
-			</div>
-			<div class="form-group">
-				<label for="class">Třída:</label>
-				<select name="class" class="form-control" id="class" required>
-					<option value="" disabled <?= $_SESSION['vars']['class']=="" ?"selected":""?>>Vyberte třídu</option>
-					<option value="a" <?=$_SESSION['vars']['class']=="a"?"selected":""?>>Oktáva A</option>
-					<option value="b" <?=$_SESSION['vars']['class']=="b"?"selected":""?>>Oktáva B</option>
-					<option value="c" <?=$_SESSION['vars']['class']=="c"?"selected":""?>>4. C</option>
-				</select>
-			</div>
-    </div>
-    <div class="col-sm-5">
-			<div class="form-group">
-				<label for="book">Školní kánon:</label>
-				<input id="search" class="form-control" placeholder="Vyhledávejte" autofocus></input><br />
-				<select name="book" id="book" style="overflow: auto;" class="form-control" size="25" ondblclick="send('add')">
-		<?php
-			foreach($GLOBALS['books'] as $name => $regions) {
-				echo "<optgroup label='$name'>";
-				foreach($regions as $book) {
-					echo "<option value='$book[id]'>$book[author]" . ($book['author'] == ""?"":": ") . "$book[name]</option>";
-				}
-				echo "</optgroup>";
-			}
-		?>
-				</select>
-			</div>
-    </div>
-		<div class="col-sm-2">
-			<div class="my-buttons">
-				<button class="form-control btn btn-default" onclick="send('add')">Přidat <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></button>
-				<button class="form-control btn btn-default" onclick="send('remove')"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Odebrat</button>
-				<button class="form-control btn btn-danger"  onclick="send('wipe')"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Vyprázdnit</button>
-			</div>
+		</form>
+		<hr style="margin-top: 0;">
+		<div class="no-print container text-center" style="margin-bottom: 20px;">
+			<small style="margin: 0 15px;">Autor: Honza Wijnhorst <a target="_blank" href="https://github.com/keombre">@keombre</a></small>
+			<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+				<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" />
+			</a>
+			<br />
+			<small>
+				This work is licensed under a 
+				<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+			</small>
 		</div>
-    <div class="col-sm-3">
-		<div class="form-group">
-		<label for="myBooks">Můj kánon: (<?=count($GLOBALS['myBooks'])?>/<?=\lib\local::BOOKS?>)</label>
-		<select name="myBooks" id="myBooks" style="overflow: auto" class="form-control" size="26" ondblclick="send('remove')">
-			<?php
-				foreach($GLOBALS['myBooks'] as $id => $book) {
-					echo "<option value='$id'>$book[author]" . ($book['author'] == ""?"":": ") . "$book[name] ($book[region])</option>";
-				}
-			?>
-		</select>
-		<button class="form-control btn btn-success" style="margin-top: 15px" onclick="send('finish')">Dokončit seznam <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
-    </div>
-  </div>
-</div>
-</form>
-<hr style="margin-top: 0;">
-<div class="no-print container text-center" style="margin-bottom: 20px;">
-<small style="margin: 0 15px;">Autor: Honza Wijnhorst <a target="_blank" href="https://github.com/keombre">@keombre</a></small>
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a><br />
-<small>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.</small>
-</div>
-</body>
+	</body>
 </html>

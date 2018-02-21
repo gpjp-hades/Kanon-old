@@ -137,18 +137,25 @@ new class {
 	function loadBooks() {
 		$books = $this->db->getAll();
 
-		foreach ($_SESSION['books'] as $book) {
+		$myregions = [];
 
-			$GLOBALS['myBooks'][$book] = $this->db->getInfo($book);
-			unset($books[$book]);
+		sort($_SESSION['books']);
+
+		foreach ($_SESSION['books'] as $id) {
+			unset($books[$id]);
+
+			$book = $this->replaceRegion($this->db->getInfo($id));
+			if (!isset($myregions[$book['region']]))
+				$myregions[$book['region']] = [];
+			array_push($myregions[$book['region']], $book);
 		}
-		
-		$GLOBALS['myBooks'] = array_map([$this, "replaceRegion"], $GLOBALS['myBooks']);
+
+		$GLOBALS['myBooks'] = $myregions;
 
 		$regions = [];
 
 		foreach ($books as $book) {
-			$this->replaceRegion($book);
+			$book = $this->replaceRegion($book);
 			if (!isset($regions[$book['region']]))
 				$regions[$book['region']] = [];
 			array_push($regions[$book['region']], $book);
@@ -157,7 +164,7 @@ new class {
 		$GLOBALS['books'] = $regions;
 	}
 
-	function replaceRegion(&$book) {
+	function replaceRegion($book) {
 		$book['region'] = \lib\local::REGIONS[$book['region']];
 		return $book;
 	}

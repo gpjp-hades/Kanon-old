@@ -1,59 +1,65 @@
 <?php \lib\autoloader::getTemplate('header')?>
-<form id="form" method="POST" class="no-print">
-	<input type="hidden" name="state" id="form_state" />
-	<?=\lib\csrf::printHTML()?>
-</form>
-<div class="container">
-<div class="no-print panel panel-default">
-<div class="panel-body">
-<p>Kánon zkontrolujte, odešlete a poté vytiskněte.</p>
-<button class="btn btn-default" onclick="window.location.href='<?=\lib\autoloader::ROOT?>'">Zpět</button>
-<div class="pull-right btn-group">
+			<form id="form" method="POST" class="no-print">
+				<input type="hidden" name="state" id="form_state" />
+				<?=\lib\csrf::printHTML("\t\t\t\t")?>
+			</form>
+			<div class="container">
+				<div class="no-print panel panel-default">
+					<div class="panel-body">
+						<p>Kánon zkontrolujte, odešlete a poté vytiskněte.</p>
+						<button class="btn btn-default" onclick="window.location.href='<?=\lib\autoloader::ROOT?>'">Zpět</button>
+						<div class="pull-right btn-group">
 <?php if ($GLOBALS['print']):?>
-	<button class="btn btn-primary" onclick="window.print()">Tisk</button>
-	<button class="btn btn-success disabled" data-toggle="tooltip" data-placement="top" title="Kánon již byl odeslán">Odeslat</button>
+							<button class="btn btn-primary" onclick="window.print()">Tisk</button>
+							<button class="btn btn-success disabled" data-toggle="tooltip" data-placement="top" title="Kánon již byl odeslán">Odeslat</button>
 <?php else:?>
-  <button class="btn btn-primary disabled" data-toggle="tooltip" data-placement="top" title="Před tiskem kánon odešlete">Tisk</button>
-	<button class="btn btn-success" onclick="send('save')">Odeslat</button>
+						<button class="btn btn-primary disabled" data-toggle="tooltip" data-placement="top" title="Před tiskem kánon odešlete">Tisk</button>
+							<button class="btn btn-success" onclick="send('save')">Odeslat</button>
 <?php endif?>
-</div>
-</div>
-</div>
-<h3>Kánon <?=date("Y")?></h3>
-<div class="table-responsive">
-	<table style="table">
-		<tr>
-			<td>Jméno:&nbsp;&nbsp;</td>
-			<td><strong><?= $GLOBALS['name'] . " " . $GLOBALS['surname']?></strong></td>
-		</tr>
-		<tr>
-			<td>Třída: </td>
-			<td><strong><?= $GLOBALS['class']?></strong></td>
-		</tr>
-	</table>
-</div>
-<hr>
-<h4>Knihy</h4>
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th class="col-md-2">Autor</th>
-      <th class="col-md-4">Dílo</th>
-    </tr>
-  </thead>
+						</div>
+					</div>
+				</div>
+				<h3>Kánon <?=date("Y")?></h3>
+				<div class="table-responsive">
+					<table style="table">
+						<tr>
+							<td>Jméno:&nbsp;&nbsp;</td>
+							<td><strong><?= $GLOBALS['name'] . " " . $GLOBALS['surname']?></strong></td>
+						</tr>
+						<tr>
+							<td>Třída: </td>
+							<td><strong><?= $GLOBALS['class']?></strong></td>
+						</tr>
+					</table>
+				</div>
+				<hr>
+				<h4>Knihy</h4>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th class="col-md-2">Autor</th>
+							<th class="col-md-4">Dílo</th>
+						</tr>
+					</thead>
 <?php
-	foreach($GLOBALS['books'] as $id => $book) {
-		echo "<tr><td>$book[author]</td><td>$book[name]</td></tr>";
-	}
+foreach($GLOBALS['books'] as $id => $book) {
+	echo "\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>$book[author]</td>\n\t\t\t\t\t\t<td>$book[name]</td>\n\t\t\t\t\t</tr>" . PHP_EOL;
+}
 ?>
-</table>
-</div>
-</form>
-<hr>
-<div class="no-print container text-center" style="margin-bottom: 20px;">
-<small style="margin: 0 15px;">Autor: Honza Wijnhorst <a target="_blank" href="https://github.com/keombre">@keombre</a></small>
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a><br />
-<small>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.</small>
-</div>
-</body>
+				</table>
+			</div>
+		</form>
+		<hr>
+		<div class="no-print container text-center" style="margin-bottom: 20px;">
+			<small style="margin: 0 15px;">Autor: Honza Wijnhorst <a target="_blank" href="https://github.com/keombre">@keombre</a></small>
+			<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">
+				<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" />
+			</a>
+			<br />
+			<small>
+				This work is licensed under a 
+				<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
+			</small>
+		</div>
+	</body>
 </html>
