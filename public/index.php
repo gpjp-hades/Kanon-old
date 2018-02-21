@@ -6,31 +6,12 @@ require_once "../lib/autoloader.php";
 
 new class {
 
-	function checkPreview() {
-		if ($_SERVER['REQUEST_URI'] != \lib\autoloader::ROOT . "/preview")
-			return false;
-		
-		new \lib\preview($this->db);
-		exit();
-	}
-
 	function __construct() {
 
 		$this->db = new \lib\db("../db/kanon.csv");
 		
 		$this->checkPreview();
-
-		if (!isset($_SESSION['books']))
-			$_SESSION['books'] = [];
-		
-		if (!isset($_SESSION['print']))
-			$_SESSION['print'] = false;
-
-		if (!isset($_SESSION['vars']))
-			$_SESSION['vars'] = ["name" => "", "surname" => "", "class" => ""];
-			
-		$GLOBALS = ["myBooks" => []];
-
+		$this->initVars();
 		$this->clearVars();
 
 		if (isset($_POST['state']) && !empty($_POST['state'])) {
@@ -40,14 +21,7 @@ new class {
 				exit();
 			}
 
-			if (isset($_POST['name']) && !empty($_POST['name']))
-				$_SESSION['vars']['name'] = $_POST['name'];
-			
-			if (isset($_POST['surname']) && !empty($_POST['surname']))
-				$_SESSION['vars']['surname'] = $_POST['surname'];
-			
-			if (isset($_POST['class']) && !empty($_POST['class']))
-				$_SESSION['vars']['class'] = $_POST['class'];
+			$this->checkVars();
 
 			if ($_POST['state'] == "add") {
 				$this->add();
@@ -63,6 +37,39 @@ new class {
 		} else {
 			$this->display();
 		}
+	}
+
+	
+	function checkPreview() {
+		if ($_SERVER['REQUEST_URI'] != \lib\autoloader::ROOT . "/preview")
+			return false;
+		
+		new \lib\preview($this->db);
+		exit();
+	}
+
+	function initVars() {
+		if (!isset($_SESSION['books']))
+			$_SESSION['books'] = [];
+		
+		if (!isset($_SESSION['print']))
+			$_SESSION['print'] = false;
+
+		if (!isset($_SESSION['vars']))
+			$_SESSION['vars'] = ["name" => "", "surname" => "", "class" => ""];
+		
+		$GLOBALS = ["myBooks" => []];
+	}
+
+	function checkVars() {
+		if (isset($_POST['name']) && !empty($_POST['name']))
+			$_SESSION['vars']['name'] = $_POST['name'];
+		
+		if (isset($_POST['surname']) && !empty($_POST['surname']))
+			$_SESSION['vars']['surname'] = $_POST['surname'];
+		
+		if (isset($_POST['class']) && !empty($_POST['class']))
+			$_SESSION['vars']['class'] = $_POST['class'];
 	}
 
 	function clearVars() {
@@ -100,8 +107,7 @@ new class {
 	}
 
 	function finish() {
-		if (!isset($_POST['name']) || $_POST['name'] == '' ||
-		    	!isset($_POST['surname']) || $_POST['surname'] == '') {
+		if (!isset($_POST['name']) || $_POST['name'] == '' || !isset($_POST['surname']) || $_POST['surname'] == '') {
 			$this->display("index", "error", \lib\local::MISSING_UNAME);
 		} else if (!isset($_POST['class']) || $_POST['class'] == '') {
 			$this->display("index", "error", \lib\local::MISSING_CLASS);
@@ -109,7 +115,7 @@ new class {
 			try {
 				$validate = new \lib\validate($this->db);
 				if ($validate->failed) {
-			$this->display("index", "info", $validate->getRegionMessage(), \lib\local::REGION_FAIL_TITLE);
+					$this->display("index", "info", $validate->getRegionMessage(), \lib\local::REGION_FAIL_TITLE);
 				} else {
 					header("Location: ".\lib\autoloader::ROOT."/preview");
 				}
@@ -152,8 +158,7 @@ new class {
 	}
 
 	function replaceRegion(&$book) {
-
-				$book['region'] = \lib\local::REGIONS[$book['region']];
-				return $book;
-		}
+		$book['region'] = \lib\local::REGIONS[$book['region']];
+		return $book;
+	}
 };

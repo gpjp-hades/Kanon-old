@@ -7,14 +7,6 @@ class db {
 
     function __construct($fname) {
         $this->load($fname);
-        //$this->testLoad();
-    }
-
-    function testLoad() {
-        $this->book = [
-            ["name" => "hola", "author" => "pepa", "region" => 0],
-            ["name" => "hola", "author" => "pepa", "region" => 0]
-        ];
     }
 
     function load(string $fname) {
