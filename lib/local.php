@@ -10,6 +10,8 @@ class local {
     const CLEARED           = "Kánon vymazán";
     const NO_BOOK_SELECTED  = "Žádná kniha nevybraná";
     const REGION_FAIL_TITLE = "Nezvolili jste dost děl z jednotlivých období";
+    const SAVE_FAILED       = "Odeslání se nepodařilo";
+    const SAVE_SUCCESS      = "Kánon odeslán";
 
     static function MORE_AUTHORS ($name) {
         return "Máte více než 2 díla od autora <strong>" . $name . "</strong>";

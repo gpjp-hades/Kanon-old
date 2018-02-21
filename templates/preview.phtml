@@ -1,6 +1,13 @@
 <?php \lib\autoloader::getTemplate('header')?>
+<form id="form" method="POST" class="no-print">
+	<input type="hidden" name="state" id="form_state" />
+	<?=\lib\csrf::printHTML()?>
+</form>
 <div class="container">
-<button class="no-print btn btn-primary" onclick="window.print()">Tisk!</button>
+<div class="no-print btn-group">
+	<button class="btn btn-primary" onclick="window.print()">Tisk</button>
+	<button class="btn btn-success" onclick="send('save')">Odeslat</button>
+</div>
 <h3>Kánon <?=date("Y")?></h3>
 <div class="table-responsive">
 	<table style="table">
