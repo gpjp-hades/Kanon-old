@@ -31,6 +31,17 @@
 			}
 		</style>
 		<script>
+			function warnIE() {
+				var ua = window.navigator.userAgent;
+				if (
+					ua.indexOf('MSIE ') > -1 ||
+					ua.indexOf('Trident/') > -1 ||
+					ua.indexOf('Edge/') > -1
+				) {
+					alert("Používáte nepodporovaný prohlížeč. Internet Explorer a Edge nefungují.\n\nZvažte přechod na jakýkoliv jiný prohlížeč.");
+				}
+			}
+			warnIE();
 			function send(type) {
 				let form = document.getElementById("form");
 				if (form.reportValidity()) {
