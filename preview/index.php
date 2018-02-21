@@ -36,10 +36,12 @@ new class {
             "name" => $_SESSION['vars']['name'],
             "surname" => $_SESSION['vars']['surname'],
             "class" => $class,
-            "books" => array_map([$this, "replaceRegion"], $books)
+            "books" => array_map([$this, "replaceRegion"], $books),
+            "print" => true
         ];
         
         if (isset($_POST['state']) && $_POST['state'] == "save") {
+            
             try {
                 $save = new \lib\save("../out");
                 $save->save($books);
@@ -53,7 +55,6 @@ new class {
 
         \lib\autoloader::getTemplate("preview");
 
-        
     }
 
     function replaceRegion($book) {

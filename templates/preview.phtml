@@ -4,9 +4,20 @@
 	<?=\lib\csrf::printHTML()?>
 </form>
 <div class="container">
-<div class="no-print btn-group">
+<div class="no-print panel panel-default">
+<div class="panel-body">
+<p>Kánon zkontrolujte, odešlete a poté vytiskněte.</p>
+<button class="btn btn-default" onclick="window.print()">Zpět</button>
+<div class="pull-right btn-group">
+<?php if ($GLOBALS['print']):?>
 	<button class="btn btn-primary" onclick="window.print()">Tisk</button>
+	<button class="btn btn-success disabled" data-toggle="tooltip" data-placement="top" title="Kánon již byl odeslán">Odeslat</button>
+<?php else:?>
+  <button class="btn btn-primary disabled" data-toggle="tooltip" data-placement="top" title="Před tiskem kánon odešlete">Tisk</button>
 	<button class="btn btn-success" onclick="send('save')">Odeslat</button>
+<?php endif?>
+</div>
+</div>
 </div>
 <h3>Kánon <?=date("Y")?></h3>
 <div class="table-responsive">

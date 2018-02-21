@@ -29,9 +29,16 @@
 		</style>
 		<script>
 			function send(type) {
-				document.getElementById("form_state").value = type;
-				document.getElementById("form").submit();
+				let form = document.getElementById("form");
+				if (form.reportValidity()) {
+					document.getElementById("form_state").value = type;
+					document.getElementById("form").submit();
+				}
+				return false;
 			}
+			$(document).ready(function(){
+				$('[data-toggle="tooltip"]').tooltip(); 
+		});
 		</script>
 	</head>
 	<body>

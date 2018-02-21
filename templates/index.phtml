@@ -15,8 +15,8 @@
 			</div>
 			<div class="form-group">
 				<label for="class">Třída:</label>
-				<select name="class" class="form-control" id="class">
-					<option disabled <?= $_SESSION['vars']['class']=="" ?"selected":""?>>Vyberte třídu</option>
+				<select name="class" class="form-control" id="class" required>
+					<option value="" disabled <?= $_SESSION['vars']['class']=="" ?"selected":""?>>Vyberte třídu</option>
 					<option value="a" <?=$_SESSION['vars']['class']=="a"?"selected":""?>>Oktáva A</option>
 					<option value="b" <?=$_SESSION['vars']['class']=="b"?"selected":""?>>Oktáva B</option>
 					<option value="c" <?=$_SESSION['vars']['class']=="c"?"selected":""?>>4. C</option>

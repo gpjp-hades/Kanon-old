@@ -87,15 +87,22 @@ new class {
 	}
 
 	function finish() {
-		try {
-			$validate = new \lib\validate($this->db);
-			if ($validate->failed) {
-        $this->display("index", "info", $validate->getRegionMessage(), \lib\local::REGION_FAIL_TITLE);
-			} else {
-				header("Location: preview");
+		if (!isset($_POST['name']) || $_POST['name'] == '' ||
+		    !isset($_POST['surname']) || $_POST['surname'] == '') {
+			$this->display("index", "error", \lib\local::MISSING_UNAME);
+		} else if (!isset($_POST['class']) || $_POST['class'] == '') {
+			$this->display("index", "error", \lib\local::MISSING_CLASS);
+		} else {
+			try {
+				$validate = new \lib\validate($this->db);
+				if ($validate->failed) {
+			$this->display("index", "info", $validate->getRegionMessage(), \lib\local::REGION_FAIL_TITLE);
+				} else {
+					header("Location: preview");
+				}
+			} catch (\Exception $e) {
+			$this->display("index", "error", $e->getMessage());
 			}
-		} catch (\Exception $e) {
-      $this->display("index", "error", $e->getMessage());
 		}
 	}
   

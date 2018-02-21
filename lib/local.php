@@ -13,13 +13,16 @@ class local {
     const SAVE_FAILED       = "Odeslání se nepodařilo";
     const SAVE_SUCCESS      = "Kánon odeslán";
 
+    const MISSING_UNAME     = "Vyplňtě jméno";
+    const MISSING_CLASS     = "Vyberte třídu";
+
     static function MORE_AUTHORS ($name) {
         return "Máte více než 2 díla od autora <strong>" . $name . "</strong>";
     }
 
     const MIN_REGIONS   = [0, 0, 0, 0];
     const MAX_AUTHORS   = 2;
-    const BOOKS         = 20;
+    const BOOKS         = 4;
 
     const REGIONS = [
         "Doba kamenná",

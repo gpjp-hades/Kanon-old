@@ -1,0 +1,11 @@
+{
+    "name": "gpjp/kanon-old",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Keombre",
+            "email": "keombre8@gmail.com"
+        }
+    ],
+    "require": {}
+}
