@@ -1,0 +1,29 @@
+<?php \lib\autoloader::getTemplate('header')?>
+<div class="container">
+<button class="no-print btn btn-primary" onclick="window.print()">Tisk!</button>
+<h3>Kánon <?=date("Y")?></h3>
+<div class="table-responsive">
+	<table style="table">
+		<tr>
+			<td>Jméno:&nbsp;&nbsp;</td>
+			<td><strong><?= $GLOBALS['name'] . " " . $GLOBALS['surname']?></strong></td>
+		</tr>
+		<tr>
+			<td>Třída: </td>
+			<td><strong><?= $GLOBALS['class']?></strong></td>
+		</tr>
+	</table>
+</div>
+<hr>
+<h4>Knihy</h4>
+<table class="table">
+<?php
+	foreach($GLOBALS['books'] as $book) {
+		echo "<tr><td>$book[region]</td><td>$book[author]</td><td>$book[name]</td></tr>";
+	}
+?>
+</table>
+</div>
+</form>
+</body>
+</html>

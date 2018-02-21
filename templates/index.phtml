@@ -25,11 +25,11 @@
     </div>
     <div class="col-sm-5">
 			<div class="form-group">
-				<label for="books">Školní kánon:</label>
-				<select name="books" id="books" class="form-control" size="29" ondblclick="send('add')">
+				<label for="book">Školní kánon:</label>
+				<select name="book" id="book" class="form-control" size="29" ondblclick="send('add')">
 		<?php
 			foreach($GLOBALS['books'] as $id => $book) {
-				echo "<option value='$id'>$book[0] : $book[1]</option>";
+				echo "<option value='$id'>$book[name] : $book[author] : $book[region]</option>";
 			}
 		?>
 				</select>
@@ -44,11 +44,11 @@
 		</div>
     <div class="col-sm-3">
 		<div class="form-group">
-		<label for="myBooks">Školní kánon:</label>
+		<label for="myBooks">Můj kánon:</label>
 		<select name="myBooks" id="myBooks" class="form-control" size="26" ondblclick="send('remove')">
 			<?php
 				foreach($GLOBALS['myBooks'] as $id => $book) {
-					echo "<option value='$id'>$book[0] : $book[1]</option>";
+					echo "<option value='$id'>$book[name] : $book[author] : $book[region]</option>";
 				}
 			?>
 		</select>

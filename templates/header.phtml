@@ -5,6 +5,8 @@
 		<meta name="author" content="Keombre" />
 		<meta name="author" content="Wochozka" />
 		<title>Zadání maturitního kánonu</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<style>
 		@media (min-width: 768px) {
@@ -41,20 +43,51 @@
 			</div>
 		</nav>
 <?php if (isset($GLOBALS['state'])):?>
-		<div class="container no-print">
+		<div class="container no-print" style="position: fixed; width: 100%; z-index: 5;">
 			<div class="row">
 				<div class="col-sm-offset-3 col-sm-6 no-print">
 <?php if ($GLOBALS['state'] == "success"):?>
-					<div class="alert alert-success">
+					<div id='alert' class="alert alert-success alert-dismissable">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <?=@$GLOBALS['message']?>
 					</div>
 <?php endif;?>
 <?php if ($GLOBALS['state'] == "error"):?>
-					<div class="alert alert-danger">
+					<div id='alert' class="alert alert-danger alert-dismissable">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 <?=@$GLOBALS['message']?>
 					</div>
 <?php endif;?>
 				</div>
+				<script>
+				$("#alert").fadeTo(3000, 500).slideUp(500, function(){
+					$("#alert").slideUp(500);
+				});
+				</script>
 			</div>
 		</div>
+<?php if ($GLOBALS['state'] == "info"):?>
+<div id="myModal" class="modal fade in" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><?=$GLOBALS['title']?></h4>
+      </div>
+      <div class="modal-body">
+		<?=$GLOBALS['message']?>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Zavřít</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+jQuery(document).ready(function($) {
+    $('#myModal').modal('show')
+});
+</script>
 <?php endif;?>
+<?php endif;?>
+

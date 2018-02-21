@@ -8,13 +8,12 @@ final class autoloader {
 
   public const LIBS = ["lib"];
   public const TEMPLATES = "templates";
+  public const ROOT = "/Kanon-old";
 
   function __construct() {
-
-    $cwd = getcwd();
     $final = [];
     foreach ($this::LIBS as $path) {
-      $final = \array_merge($final, glob($cwd . "/$path/*.{php}", GLOB_BRACE));
+      $final = \array_merge($final, glob($_SERVER['DOCUMENT_ROOT'] . \lib\autoloader::ROOT . "/$path/*.{php}", GLOB_BRACE));
     }
 
     foreach ($final as $file) {
@@ -27,7 +26,7 @@ final class autoloader {
   }
 
   public static function getTemplate(string $name) {
-    $fname = getcwd() . "/" . \lib\autoloader::TEMPLATES . "/" . $name . ".phtml";
+    $fname = $_SERVER['DOCUMENT_ROOT'] . \lib\autoloader::ROOT . "/" . \lib\autoloader::TEMPLATES . "/" . $name . ".phtml";
     if (!is_file($fname))
       return false;
     \lib\csrf::wipe();
