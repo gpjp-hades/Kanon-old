@@ -37,14 +37,13 @@
 <table class="table table-hover">
   <thead>
     <tr>
-      <th class="col-md-1">Období</th>
       <th class="col-md-2">Autor</th>
       <th class="col-md-4">Dílo</th>
     </tr>
   </thead>
 <?php
 	foreach($GLOBALS['books'] as $id => $book) {
-		echo "<tr><td>$book[region]</td><td>$book[author]</td><td>$book[name]</td></tr>";
+		echo "<tr><td>$book[author]</td><td>$book[name]</td></tr>";
 	}
 ?>
 </table>

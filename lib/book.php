@@ -28,6 +28,7 @@ class db {
             if (!isset($line[1]))
                 continue;
             $this->book[$line[0]] = [
+                "id" => $line[0],
                 "name" => $line[3],
                 "author" => $line[2],
                 "region" => $line[1]

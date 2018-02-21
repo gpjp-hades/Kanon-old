@@ -1,8 +1,8 @@
 <?php
 
-namespace preview;
-
 session_start();
+
+\chdir("..");
 
 require_once "../lib/autoloader.php";
 
@@ -33,7 +33,7 @@ new class {
         ksort($books);
 
         $GLOBALS = [];
-        
+
         if (isset($_POST['state']) && $_POST['state'] == "save") {
             if (!\lib\csrf::check()) {
                 header("Location: .");

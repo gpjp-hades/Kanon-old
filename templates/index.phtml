@@ -29,8 +29,12 @@
 				<input id="search" class="form-control" placeholder="Vyhledávejte" autofocus></input><br />
 				<select name="book" id="book" style="overflow: auto;" class="form-control" size="26" ondblclick="send('add')">
 		<?php
-			foreach($GLOBALS['books'] as $id => $book) {
-				echo "<option value='$id'>$book[author]" . ($book['author'] == ""?"":": ") . "$book[name] ($book[region])</option>";
+			foreach($GLOBALS['books'] as $name => $regions) {
+				echo "<optgroup label='$name'>";
+				foreach($regions as $book) {
+					echo "<option value='$book[id]'>$book[author]" . ($book['author'] == ""?"":": ") . "$book[name]</option>";
+				}
+				echo "</optgroup>";
 			}
 		?>
 				</select>

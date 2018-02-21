@@ -2,13 +2,13 @@
 
 session_start();
 
-require_once "lib/autoloader.php";
+require_once "../lib/autoloader.php";
 
 new class {
 
 	function __construct() {
 
-		$this->db = new \lib\db("db/kanon.csv");
+		$this->db = new \lib\db("../db/kanon.csv");
 
 		if (!isset($_SESSION['books']))
 			$_SESSION['books'] = [];
@@ -48,50 +48,50 @@ new class {
 			} else if ($_POST['state'] == "finish") {
 				$this->finish();
 			} else {
-        $this->display("index", "error", \lib\local::UNKNOWN_ACTION);
+				$this->display("index", "error", \lib\local::UNKNOWN_ACTION);
 			}
 		} else {
-      $this->display();
+			$this->display();
 		}
 	}
 
 	function clearVars() {
 		$_POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
-  }
-  
-  function add() {
-	  if (!isset($_POST['book'])) {
-      $this->display("index", "error", \lib\local::NO_BOOK_SELECTED);
+	}
+	
+	function add() {
+		if (!isset($_POST['book'])) {
+			$this->display("index", "error", \lib\local::NO_BOOK_SELECTED);
 		} else if ($this->db->has($_POST['book'])) {
-      array_push($_SESSION['books'], $_POST['book']);
-      $_SESSION['print'] = false;
-      $this->display();
+			array_push($_SESSION['books'], $_POST['book']);
+			$_SESSION['print'] = false;
+			$this->display();
 		} else {
-      $this->display("index", "error", \lib\local::BOOK_NOT_FOUND);
+			$this->display("index", "error", \lib\local::BOOK_NOT_FOUND);
 		}
 	}
 
 	function wipe() {
-    $_SESSION['books'] = [];
-    $_SESSION['print'] = false;
-    $this->display("index", "success", \lib\local::CLEARED);
+		$_SESSION['books'] = [];
+		$_SESSION['print'] = false;
+		$this->display("index", "success", \lib\local::CLEARED);
 	}
 
 	function remove() {
 		if (isset($_POST['myBooks']) && in_array($_POST['myBooks'], $_SESSION['books'])) {
 
 			unset($_SESSION['books'][array_search($_POST['myBooks'], $_SESSION['books'])]);
-      $_SESSION['books'] = array_values($_SESSION['books']); //reindex
-      $_SESSION['print'] = false;
-      $this->display();
+			$_SESSION['books'] = array_values($_SESSION['books']); //reindex
+			$_SESSION['print'] = false;
+			$this->display();
 		} else {
-      $this->display("index", "error", \lib\local::BOOK_NOT_FOUND);
+			$this->display("index", "error", \lib\local::BOOK_NOT_FOUND);
 		}
 	}
 
 	function finish() {
 		if (!isset($_POST['name']) || $_POST['name'] == '' ||
-		    !isset($_POST['surname']) || $_POST['surname'] == '') {
+		    	!isset($_POST['surname']) || $_POST['surname'] == '') {
 			$this->display("index", "error", \lib\local::MISSING_UNAME);
 		} else if (!isset($_POST['class']) || $_POST['class'] == '') {
 			$this->display("index", "error", \lib\local::MISSING_CLASS);
@@ -101,22 +101,22 @@ new class {
 				if ($validate->failed) {
 			$this->display("index", "info", $validate->getRegionMessage(), \lib\local::REGION_FAIL_TITLE);
 				} else {
-					header("Location: preview");
+					header("Location: ./preview");
 				}
 			} catch (\Exception $e) {
 			$this->display("index", "error", $e->getMessage());
 			}
 		}
 	}
-  
-  function display($template = "index", $state = null, $message = null, $title = null) {
-    $GLOBALS['state'] = $state;
-    $GLOBALS['title'] = $title;
-    $GLOBALS['message'] = $message;
+	
+	function display($template = "index", $state = null, $message = null, $title = null) {
+		$GLOBALS['state'] = $state;
+		$GLOBALS['title'] = $title;
+		$GLOBALS['message'] = $message;
 
-    $this->loadBooks();
-    \lib\autoloader::getTemplate($template);
-  }
+		$this->loadBooks();
+		\lib\autoloader::getTemplate($template);
+	}
 
 	function loadBooks() {
 		$books = $this->db->getAll();
@@ -125,8 +125,25 @@ new class {
 
 			$GLOBALS['myBooks'][$book] = $this->db->getInfo($book);
 			unset($books[$book]);
-    }
+		}
+		
+		$GLOBALS['myBooks'] = array_map([$this, "replaceRegion"], $GLOBALS['myBooks']);
 
-		$GLOBALS['books'] = $books;
+		$regions = [];
+
+		foreach ($books as $book) {
+			$this->replaceRegion($book);
+			if (!isset($regions[$book['region']]))
+				$regions[$book['region']] = [];
+			array_push($regions[$book['region']], $book);
+		}
+
+		$GLOBALS['books'] = $regions;
 	}
+
+	function replaceRegion(&$book) {
+
+				$book['region'] = \lib\local::REGIONS[$book['region']];
+				return $book;
+		}
 };

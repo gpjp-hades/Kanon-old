@@ -20,15 +20,15 @@ class local {
         return "Máte více než 2 díla od autora <strong>" . $name . "</strong>";
     }
 
-    const MIN_REGIONS   = [0, 0, 0, 0];
+    const MIN_REGIONS   = [2, 3, 4, 5];
     const MAX_AUTHORS   = 2;
-    const BOOKS         = 4;
+    const BOOKS         = 20;
 
     const REGIONS = [
-        "Doba kamenná",
-        "Období toaletního papíru",
-        "Někdy včera",
-        "Diáře, protože proč ne"
+        "Literatura do konce 18. století",
+        "Literatura 19. století",
+        "Světová literatura 20. a 21. století",
+        "Česká literatura 20. a 21. století"
     ];
 
     const GRAPHICONS = [
