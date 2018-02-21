@@ -32,26 +32,32 @@ new class {
 
         ksort($books);
 
-        $GLOBALS = [
-            "name" => $_SESSION['vars']['name'],
-            "surname" => $_SESSION['vars']['surname'],
-            "class" => $class,
-            "books" => array_map([$this, "replaceRegion"], $books),
-            "print" => true
-        ];
+        $GLOBALS = [];
         
         if (isset($_POST['state']) && $_POST['state'] == "save") {
-            
+            if (!\lib\csrf::check()) {
+                header("Location: .");
+                exit();
+            }
             try {
                 $save = new \lib\save("../out");
                 $save->save($books);
                 $GLOBALS['state'] = "success";
                 $GLOBALS['message'] = \lib\local::SAVE_SUCCESS;
+                $_SESSION['print'] = true;
             } catch (\Exception $e) {
                 $GLOBALS['state'] = "error";
                 $GLOBALS['message'] = \lib\local::SAVE_FAILED;
             }
         }
+
+        $GLOBALS = array_merge($GLOBALS, [
+            "name" => $_SESSION['vars']['name'],
+            "surname" => $_SESSION['vars']['surname'],
+            "class" => $class,
+            "books" => array_map([$this, "replaceRegion"], $books),
+            "print" => $_SESSION['print']
+        ]);
 
         \lib\autoloader::getTemplate("preview");
 

@@ -12,6 +12,9 @@ new class {
 
 		if (!isset($_SESSION['books']))
 			$_SESSION['books'] = [];
+		
+		if (!isset($_SESSION['print']))
+			$_SESSION['print'] = false;
 
 		if (!isset($_SESSION['vars']))
 			$_SESSION['vars'] = ["name" => "", "surname" => "", "class" => ""];
@@ -23,7 +26,7 @@ new class {
 		if (isset($_POST['state']) && !empty($_POST['state'])) {
 
 			if (!\lib\csrf::check()) {
-				$this->display();
+				header("Location: .");
 				exit();
 			}
 
@@ -57,11 +60,11 @@ new class {
   }
   
   function add() {
-		if (!isset($_POST['book'])) {
+	  if (!isset($_POST['book'])) {
       $this->display("index", "error", \lib\local::NO_BOOK_SELECTED);
 		} else if ($this->db->has($_POST['book'])) {
       array_push($_SESSION['books'], $_POST['book']);
-      
+      $_SESSION['print'] = false;
       $this->display();
 		} else {
       $this->display("index", "error", \lib\local::BOOK_NOT_FOUND);
@@ -70,7 +73,7 @@ new class {
 
 	function wipe() {
     $_SESSION['books'] = [];
-    
+    $_SESSION['print'] = false;
     $this->display("index", "success", \lib\local::CLEARED);
 	}
 
@@ -79,7 +82,7 @@ new class {
 
 			unset($_SESSION['books'][array_search($_POST['myBooks'], $_SESSION['books'])]);
       $_SESSION['books'] = array_values($_SESSION['books']); //reindex
-      
+      $_SESSION['print'] = false;
       $this->display();
 		} else {
       $this->display("index", "error", \lib\local::BOOK_NOT_FOUND);
