@@ -17,11 +17,20 @@
 				display: none !important;
 			}
 		}
-		.my-buttons input {
-			margin-top: 10px;
-			margin-bottom: 10px;
+		.my-buttons button {
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+		.my-buttons button.btn-danger {
+			margin-top: 25px;
 		}
 		</style>
+		<script>
+			function send(type) {
+				document.getElementById("form_state").value = type;
+				document.getElementById("form").submit();
+			}
+		</script>
 	</head>
 	<body>
 		<nav class="navbar navbar-inverse no-print">
@@ -31,20 +40,18 @@
 			</div>
 			</div>
 		</nav>
-<?php if (isset($_VARS['state'])):?>
+<?php if (isset($GLOBALS['state'])):?>
 		<div class="container no-print">
 			<div class="row">
 				<div class="col-sm-offset-3 col-sm-6 no-print">
-<?php if ($_VARS['state'] == "success"):?>
-					<div class="alert alert-success alert-dismissable">
-						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<?=@$_VARS['message']?>
+<?php if ($GLOBALS['state'] == "success"):?>
+					<div class="alert alert-success">
+<?=@$GLOBALS['message']?>
 					</div>
 <?php endif;?>
-<?php if ($_VARS['state'] == "error"):?>
-					<div class="alert alert-success alert-dismissable">
-						<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-<?=@$_VARS['message']?>
+<?php if ($GLOBALS['state'] == "error"):?>
+					<div class="alert alert-danger">
+<?=@$GLOBALS['message']?>
 					</div>
 <?php endif;?>
 				</div>

@@ -32,4 +32,11 @@ class csrf {
     \lib\csrf::wipe();
     return false;
   }
+
+  static function printHTML() {
+    $vals = \lib\csrf::getValues();
+    return "<input type='hidden' name='csrf' value='csrf' />
+    <input type='hidden' name='$vals[0]' value='$vals[1]' />
+";
+  }
 }

@@ -9,18 +9,32 @@ class index {
 
 		if (!isset($_SESSION['books']))
 			$_SESSION['books'] = [];
+
+		if (!isset($_SESSION['vars']))
+			$_SESSION['vars'] = ["name" => "", "surname" => "", "class" => ""];
 			
-		$_VARS = [];
+		$GLOBALS = [];
 
 		$this->clearVars();
 
 		if (isset($_POST['state']) && !empty($_POST['state'])) {
-			if ($_POST['state'] == "add") {
 
-				if (!\lib\csrf::check()) {
-					\lib\autoloader::getTemplate("csrf");
-					exit();
-				}
+			if (!\lib\csrf::check()) {
+				$this->loadBooks();
+				\lib\autoloader::getTemplate("index");
+				exit();
+			}
+
+			if (isset($_POST['name']) && !empty($_POST['name']))
+				$_SESSION['vars']['name'] = $_POST['name'];
+			
+			if (isset($_POST['surname']) && !empty($_POST['surname']))
+				$_SESSION['vars']['surname'] = $_POST['surname'];
+			
+			if (isset($_POST['class']) && !empty($_POST['class']))
+				$_SESSION['vars']['class'] = $_POST['class'];
+
+			if ($_POST['state'] == "add") {
 
 				if (
 					isset($_POST['book']) &&
@@ -28,12 +42,15 @@ class index {
 					\lib\books::has($_POST['book'])
 				) {
 					array_push($_SESSION['books'], $_POST['book']);
+					
+					$this->loadBooks();
 					\lib\autoloader::getTemplate("index");
 				} else {
 
-					$_VARS['state'] = "error";
-					$_VARS['message'] = "Kniha nenalezena";
+					$GLOBALS['state'] = "error";
+					$GLOBALS['message'] = "Kniha nenalezena";
 
+					$this->loadBooks();
 					\lib\autoloader::getTemplate("index");
 				}
 				
@@ -41,42 +58,57 @@ class index {
 
 				$_SESSION['books'] = [];
 
-				$_VARS['state'] = "success";
-				$_VARS['message'] = "Kánon vymazán";
+				$GLOBALS['state'] = "success";
+				$GLOBALS['message'] = "Kánon vymazán";
 
+				$this->loadBooks();
 				\lib\autoloader::getTemplate("index");
 
 			} else if ($_POST['state'] == "remove") {
 				if (
-					isset($_POST['book']) &&
-					!empty($_POST['book']) &&
-					in_array($_POST['book'], $_SESSION['books'])
+					isset($_POST['myBook']) &&
+					!empty($_POST['myBook']) &&
+					in_array($_POST['myBook'], $_SESSION['books'])
 				) {
 
-					unset($_SESSION['books'][$_POST['book']]);
+					unset($_SESSION['books'][$_POST['myBook']]);
 					$_SESSION['books'] = array_values($_SESSION['books']); //reindex
 
-					$_VARS['state'] = "success";
-					$_VARS['message'] = "Kánon vymazán";
-
+					$this->loadBooks();
 					\lib\autoloader::getTemplate("index");
 				} else {
 					
-					$_VARS['state'] = "error";
-					$_VARS['message'] = "Kniha nenalezena";
+					$GLOBALS['state'] = "error";
+					$GLOBALS['message'] = "Kniha nenalezena";
 
+					$this->loadBooks();
 					\lib\autoloader::getTemplate("index");
 				}
 			} else if ($_POST['state'] == "finish") {
-			} else if ($_POST['state'] == "save") {
+				new \lib\validate;
+			} else {
+				$GLOBALS['state'] = "error";
+				$GLOBALS['message'] = "Neznámá akce";
+
+				$this->loadBooks();
+				\lib\autoloader::getTemplate("index");
 			}
 		} else {
+			$this->loadBooks();
 			\lib\autoloader::getTemplate("index");
 		}
 	}
 
 	function clearVars() {
 		$_POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+	}
+
+	function loadBooks() {
+		$GLOBALS['books'] = [
+			["hola", "mola"]
+		];
+
+		$GLOBALS['myBooks'] = $_SESSION['books'];
 	}
 }
 

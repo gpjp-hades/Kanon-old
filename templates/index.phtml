@@ -1,83 +1,61 @@
 <?php \lib\autoloader::getTemplate('header')?>
-
-  <form name="myform" action="<?php echo($action);?>" method="POST">
-
+  <form id="form" method="POST">
+	<input type="hidden" name="state" id="form_state" />
+	<?=\lib\csrf::printHTML()?>
   <div class="container">
   <div class="row">
     <div class="col-sm-2">
-		<div class="form-group">
-			<label for="jmeno">Jméno:</label>
-			<input type="text" name="jmeno" class="form-control" id="jmeno" value="<?php echo(@$jmeno) ?>" autofocus required />
-		</div>
-		<div class="form-group">
-			<label for="prijmeni">Příjmení:</label>
-			<input type="text" name="prijmeni" class="form-control" id="prijmeni" value="<?php echo(@$prijmeni) ?>" required />
-		</div>
-		<div class="form-group">
-			<label for="trida">Třída:</label>
-			<select name="trida" class="form-control" id="trida">
-				<option disabled <?= isset($_POST['trida'])&&$_POST['trida']!=""?"":"selected"?>>Vyberte třídu</option>
-				<option value="oktavaa" <?php if(@$_POST["trida"]=="oktavaa"){echo("selected");}?>>Oktáva A</option>
-				<option value="oktavab" <?php if(@$_POST["trida"]=="oktavab"){echo("selected");}?>>Oktáva B</option>
-				<option value="4c" <?php if(@$_POST["trida"]=="4c"){echo("selected");}?>>4. C</option>
-			</select>
-		</div>
+			<div class="form-group">
+				<label for="name">Jméno:</label>
+				<input type="text" name="name" class="form-control" id="name" value="<?=$_SESSION['vars']['name']?>" autofocus required />
+			</div>
+			<div class="form-group">
+				<label for="surname">Příjmení:</label>
+				<input type="text" name="surname" class="form-control" id="surname" value="<?=$_SESSION['vars']['surname']?>" required />
+			</div>
+			<div class="form-group">
+				<label for="class">Třída:</label>
+				<select name="class" class="form-control" id="class">
+					<option disabled <?= $_SESSION['vars']['class']=="" ?"selected":""?>>Vyberte třídu</option>
+					<option value="a" <?=$_SESSION['vars']['class']=="a"?"selected":""?>>Oktáva A</option>
+					<option value="b" <?=$_SESSION['vars']['class']=="b"?"selected":""?>>Oktáva B</option>
+					<option value="c" <?=$_SESSION['vars']['class']=="c"?"selected":""?>>4. C</option>
+				</select>
+			</div>
     </div>
     <div class="col-sm-5">
-		<div class="form-group">
-		<label for="kniha">Školní kánon:</label>
-		<select name="kniha" id="kniha" class="form-control" size="29" ondblclick="submitform()">
-<?php
-	$file = fopen("./kanon.csv", "r");
-	echo(@$get_lines);
-	for($a=0;$a<148;$a++) {
-		$line = fgets($file);
-		echo("<option value=\"$line\">$line</option>");
-	}
-	fclose($file)
-?>
-		</select>
-		</div>
+			<div class="form-group">
+				<label for="books">Školní kánon:</label>
+				<select name="books" id="books" class="form-control" size="29" ondblclick="send('add')">
+		<?php
+			foreach($GLOBALS['books'] as $id => $book) {
+				echo "<option value='$id'>$book[0] : $book[1]</option>";
+			}
+		?>
+				</select>
+			</div>
     </div>
-	<div class="col-sm-2">
-		<div class="my-buttons">
-			<input type="submit" class="form-control btn btn-default" name="button" value="Přidat ►" />
-			<input type="submit" class="form-control btn btn-danger" name="button" value="Vyprázdnit" />
+		<div class="col-sm-2">
+			<div class="my-buttons">
+				<button class="form-control btn btn-default" onclick="send('add')">Přidat <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></button>
+				<button class="form-control btn btn-default" onclick="send('remove')"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span> Odebrat</button>
+				<button class="form-control btn btn-danger"  onclick="send('wipe')"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Vyprázdnit</button>
+			</div>
 		</div>
-	</div>
     <div class="col-sm-3">
 		<div class="form-group">
-			<label for="knihy">Vybrané knihy:</label>
-			<textarea style="resize: none; white-space: nowrap;  overflow: auto;" name="knihy" cols="70" rows="22" class="form-control" id="knihy">
-<?php
-		if(@$_POST["button"] != "Vyprázdnit") {
-			if(@$_POST["knihy"]){
-				echo($_POST["knihy"]);
-			}
-			if($action == "index.php"){
-				if(@$_POST["kniha"]){
-					echo($_POST["kniha"]);
+		<label for="myBooks">Školní kánon:</label>
+		<select name="myBooks" id="myBooks" class="form-control" size="26" ondblclick="send('remove')">
+			<?php
+				foreach($GLOBALS['myBooks'] as $id => $book) {
+					echo "<option value='$id'>$book[0] : $book[1]</option>";
 				}
-			}
-		}
-?></textarea>
-		<input id="button_odeslat" class="form-control btn btn-success" style="margin-top: 15px" type="submit" name="button" value="Dokončit seznam" />
+			?>
+		</select>
+		<button class="form-control btn btn-success" style="margin-top: 15px" onclick="send('finish')">Dokončit seznam <span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
     </div>
   </div>
 </div>
 </form>
 </body>
-<?php
-if(@$_POST["button"] == "Dokončit seznam"){
-echo("<script>\n");
-echo("document.getElementById(\"button_odeslat\").click();");
-echo("</script>");
-}
-?>
-<script>
-    function submitform()
-    {
-        document.myform.submit();
-    }
-</script>
 </html>
