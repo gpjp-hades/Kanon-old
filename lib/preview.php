@@ -1,17 +1,11 @@
 <?php
 
-session_start();
+namespace lib;
 
-\chdir("..");
+class preview {
+    function __construct($db) {
 
-require_once "../lib/autoloader.php";
-
-new class {
-    function __construct() {
-
-        $this->db = new \lib\db("../db/kanon.csv");
-
-        $this->clearVars();
+        $this->db = $db;
         
         if (!$this->checkVars()) {
             header("Location: " . \lib\autoloader::ROOT);
@@ -79,8 +73,4 @@ new class {
             return true;
         return false;
     }
-
-    function clearVars() {
-		$_POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
-	}
 };
