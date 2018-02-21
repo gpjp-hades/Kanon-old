@@ -12,38 +12,27 @@ class validate {
         $this->books = $this->loadBooks();
         
         if (!$this->checkCount())
-            throw new \Exception("Nezvolili jste <strong>20</strong> knih.");
+            throw new \Exception(\lib\local::MORE_BOOKS);
 
-        $this->region = $this->checkRegion([0, 0, 0, 0]);
+        $this->region = $this->checkRegion(\lib\local::MIN_REGIONS);
         if (in_array(false, $this->region)) {
             $this->failed = true;
         }
 
-        $authors = $this->checkAuthor(2);
+        $authors = $this->checkAuthor(\lib\local::MAX_AUTHORS);
         if ($authors !== true) {
-            throw new \Exception("Máte více než 2 díla od autora <strong>" . $authors . "</strong>");
+            throw new \Exception(\lib\local::MORE_AUTHORS($authors));
         }
     }
 
     function getRegionMessage() {
-        $names = [
-            "Doba kamenná",
-            "Období toaletního papíru",
-            "Někdy včera",
-            "Diáře, protože proč ne"
-        ];
-        $graphicons = [
-            "ok" => "<span class='glyphicon glyphicon-ok' aria-hidden='true'></span> ",
-            "failed" => "<span class='glyphicon glyphicon-remove' aria-hidden='true'></span> "
-        ];
-
         $ret = "";
 
         foreach ($this->region as $id => $region) {
             if ($region) {
-                $ret .= "<span class='text-success'>" . $graphicons['ok'] . $names[$id] . "</span><br />" . PHP_EOL;
+                $ret .= "<span class='text-success'>" . \lib\local::GRAPHICONS['ok'] . \lib\local::REGIONS[$id] . "</span><br />" . PHP_EOL;
             } else {
-                $ret .= "<strong class='text-danger'>" . $graphicons['failed'] . $names[$id] . "</strong><br />" . PHP_EOL;
+                $ret .= "<strong class='text-danger'>" . \lib\local::GRAPHICONS['failed'] . \lib\local::REGIONS[$id] . "</strong><br />" . PHP_EOL;
             }
         }
 
@@ -91,6 +80,6 @@ class validate {
     }
 
     function checkCount() {
-        return count($this->books) == 20;
+        return count($this->books) == \lib\local::BOOKS;
     }
 }

@@ -5,6 +5,7 @@ session_start();
 require_once "lib/autoloader.php";
 
 new class {
+
 	function __construct() {
 
 		$this->db = new \lib\db("db/kanon.csv");
@@ -22,8 +23,7 @@ new class {
 		if (isset($_POST['state']) && !empty($_POST['state'])) {
 
 			if (!\lib\csrf::check()) {
-				$this->loadBooks();
-				\lib\autoloader::getTemplate("index");
+				$this->display();
 				exit();
 			}
 
@@ -37,100 +37,85 @@ new class {
 				$_SESSION['vars']['class'] = $_POST['class'];
 
 			if ($_POST['state'] == "add") {
-				if (!isset($_POST['book'])) {
-					
-					$GLOBALS['state'] = "error";
-					$GLOBALS['message'] = "Žádná kniha nevybraná";
-
-					$this->loadBooks();
-					\lib\autoloader::getTemplate("index");
-
-				} else if ($this->db->has($_POST['book'])) {
-					array_push($_SESSION['books'], $_POST['book']);
-					
-					$this->loadBooks();
-					\lib\autoloader::getTemplate("index");
-				} else {
-
-					$GLOBALS['state'] = "error";
-					$GLOBALS['message'] = "Kniha nenalezena";
-
-					$this->loadBooks();
-					\lib\autoloader::getTemplate("index");
-				}
-				
+				$this->add();
 			} else if ($_POST['state'] == "wipe") {
-
-				$_SESSION['books'] = [];
-
-				$GLOBALS['state'] = "success";
-				$GLOBALS['message'] = "Kánon vymazán";
-
-				$this->loadBooks();
-				\lib\autoloader::getTemplate("index");
-
+				$this->wipe();
 			} else if ($_POST['state'] == "remove") {
-				if (
-					isset($_POST['myBooks']) &&
-					in_array($_POST['myBooks'], $_SESSION['books'])
-				) {
-					unset($_SESSION['books'][array_search($_POST['myBooks'], $_SESSION['books'])]);
-					$_SESSION['books'] = array_values($_SESSION['books']); //reindex
-
-					$this->loadBooks();
-					\lib\autoloader::getTemplate("index");
-				} else {
-
-					$GLOBALS['state'] = "error";
-					$GLOBALS['message'] = "Kniha nenalezena";
-
-					$this->loadBooks();
-					\lib\autoloader::getTemplate("index");
-				}
+				$this->remove();
 			} else if ($_POST['state'] == "finish") {
-				try {
-					$validate = new \lib\validate($this->db);
-					if ($validate->failed) {
-						$GLOBALS['state'] = "info";
-						$GLOBALS['title'] = "Nezvolili jste dost děl z jednotlivých období";
-						$GLOBALS['message'] = $validate->getRegionMessage();
-
-						$this->loadBooks();
-						\lib\autoloader::getTemplate("index");
-					} else {
-						header("Location: preview");
-					}
-				} catch (\Exception $e) {
-					$GLOBALS['state'] = "error";
-					$GLOBALS['message'] = $e->getMessage();
-
-					$this->loadBooks();
-					\lib\autoloader::getTemplate("index");
-				}
+				$this->finish();
 			} else {
-				$GLOBALS['state'] = "error";
-				$GLOBALS['message'] = "Neznámá akce";
-
-				$this->loadBooks();
-				\lib\autoloader::getTemplate("index");
+        $this->display("index", "error", \lib\local::UNKNOWN_ACTION);
 			}
 		} else {
-			$this->loadBooks();
-			\lib\autoloader::getTemplate("index");
+      $this->display();
 		}
 	}
 
 	function clearVars() {
 		$_POST = filter_var_array($_POST, FILTER_SANITIZE_STRING);
+  }
+  
+  function add() {
+		if (!isset($_POST['book'])) {
+      $this->display("index", "error", \lib\local::NO_BOOK_SELECTED);
+		} else if ($this->db->has($_POST['book'])) {
+      array_push($_SESSION['books'], $_POST['book']);
+      
+      $this->display();
+		} else {
+      $this->display("index", "error", \lib\local::BOOK_NOT_FOUND);
+		}
 	}
-	
+
+	function wipe() {
+    $_SESSION['books'] = [];
+    
+    $this->display("index", "success", \lib\local::CLEARED);
+	}
+
+	function remove() {
+		if (isset($_POST['myBooks']) && in_array($_POST['myBooks'], $_SESSION['books'])) {
+
+			unset($_SESSION['books'][array_search($_POST['myBooks'], $_SESSION['books'])]);
+      $_SESSION['books'] = array_values($_SESSION['books']); //reindex
+      
+      $this->display();
+		} else {
+      $this->display("index", "error", \lib\local::BOOK_NOT_FOUND);
+		}
+	}
+
+	function finish() {
+		try {
+			$validate = new \lib\validate($this->db);
+			if ($validate->failed) {
+        $this->display("index", "info", $validate->getRegionMessage(), \lib\local::REGION_FAIL_TITLE);
+			} else {
+				header("Location: preview");
+			}
+		} catch (\Exception $e) {
+      $this->display("index", "error", $e->getMessage());
+		}
+	}
+  
+  function display($template = "index", $state = null, $message = null, $title = null) {
+    $GLOBALS['state'] = $state;
+    $GLOBALS['title'] = $title;
+    $GLOBALS['message'] = $message;
+
+    $this->loadBooks();
+    \lib\autoloader::getTemplate($template);
+  }
+
 	function loadBooks() {
 		$books = $this->db->getAll();
 
 		foreach ($_SESSION['books'] as $book) {
-			array_push($GLOBALS['myBooks'],  array_merge(["id" => $book], $this->db->getInfo($book)));
+
+			$GLOBALS['myBooks'][$book] = $this->db->getInfo($book);
 			unset($books[$book]);
-		}
+    }
 
 		$GLOBALS['books'] = $books;
 	}

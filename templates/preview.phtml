@@ -25,7 +25,7 @@
     </tr>
   </thead>
 <?php
-	foreach($GLOBALS['books'] as $book) {
+	foreach($GLOBALS['books'] as $id => $book) {
 		echo "<tr><td>$book[region]</td><td>$book[author]</td><td>$book[name]</td></tr>";
 	}
 ?>

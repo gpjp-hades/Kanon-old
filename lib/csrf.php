@@ -25,9 +25,11 @@ class csrf {
       \lib\csrf::wipe();
       return false;
     }
-    foreach ($_SESSION['csrf'] as $test) {
-      if (isset($_POST[$test[0]]) && $_POST[$test[0]] == $test[1])
-        return true;
+    if (isset($_SESSION['csrf'])) {
+      foreach ($_SESSION['csrf'] as $test) {
+        if (isset($_POST[$test[0]]) && $_POST[$test[0]] == $test[1])
+          return true;
+      }
     }
     \lib\csrf::wipe();
     return false;

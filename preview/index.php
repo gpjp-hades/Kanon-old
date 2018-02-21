@@ -27,8 +27,10 @@ new class {
         $books = [];
 
         foreach ($_SESSION['books'] as $book) {
-			array_push($books,  array_merge(["id" => $book], $this->replaceRegion($this->db->getInfo($book))));
-		}
+			$books[$book] = $this->replaceRegion($this->db->getInfo($book));
+        }
+
+        ksort($books);
         
         $GLOBALS = [
             "name" => $_SESSION['vars']['name'],
@@ -42,7 +44,7 @@ new class {
     }
 
     function replaceRegion($book) {
-        $book['region'] = ["Popelnice", "někdy v římě", "Co já vím", "Hola"][$book['region']];
+        $book['region'] = \lib\local::REGIONS[$book['region']];
         return $book;
     }
 
