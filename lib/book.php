@@ -5,9 +5,9 @@ namespace lib;
 class db {
     private $book = [];
 
-    function __construct() {
-        //$this->load();
-        $this->testLoad();
+    function __construct($fname) {
+        $this->load($fname);
+        //$this->testLoad();
     }
 
     function testLoad() {
@@ -21,17 +21,28 @@ class db {
         if (!is_file($fname))
             return false;
         
-        $this->file = file_get_contents($fname);
+        $file = str_replace("\n", "\n;", file_get_contents($fname));
+        $this->book = [];
+        
+        foreach (array_chunk(str_getcsv($file, ";"), 4) as $line) {
+            if (!isset($line[1]))
+                continue;
+            $this->book[$line[0]] = [
+                "name" => $line[3],
+                "author" => $line[2],
+                "region" => $line[1]
+            ];
+        }
     }
 
-    function has(int $book) {
+    function has($book) {
         if (isset($this->book[$book]))
             return true;
         
         return false;
     }
 
-    function getInfo(int $book) {
+    function getInfo($book) {
         if ($this->has($book))
             return $this->book[$book];
         

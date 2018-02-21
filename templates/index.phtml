@@ -44,11 +44,11 @@
 		</div>
     <div class="col-sm-3">
 		<div class="form-group">
-		<label for="myBooks">Můj kánon:</label>
+		<label for="myBooks">Můj kánon: (<?=count($GLOBALS['myBooks'])?>/20)</label>
 		<select name="myBooks" id="myBooks" class="form-control" size="26" ondblclick="send('remove')">
 			<?php
-				foreach($GLOBALS['myBooks'] as $id => $book) {
-					echo "<option value='$id'>$book[name] : $book[author] : $book[region]</option>";
+				foreach($GLOBALS['myBooks'] as $book) {
+					echo "<option value='$book[id]'>$book[name] : $book[author] : $book[region]</option>";
 				}
 			?>
 		</select>

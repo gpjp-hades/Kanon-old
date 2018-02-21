@@ -10,20 +10,19 @@ class validate {
     function __construct($db) {
         $this->db = $db;
         $this->books = $this->loadBooks();
-        /*
+        
         if (!$this->checkCount())
             throw new \Exception("Nezvolili jste <strong>20</strong> knih.");
 
-        $this->region = $this->checkRegion([0, 2, 5, 4]);
+        $this->region = $this->checkRegion([0, 0, 0, 0]);
         if (in_array(false, $this->region)) {
             $this->failed = true;
         }
 
         $authors = $this->checkAuthor(2);
         if ($authors !== true) {
-            throw new \Exception("Máte více než 2 díla od autora " . $authors);
+            throw new \Exception("Máte více než 2 díla od autora <strong>" . $authors . "</strong>");
         }
-        //*/
     }
 
     function getRegionMessage() {
@@ -66,7 +65,7 @@ class validate {
                 $authors[$book['author']] = 0;
             
             $authors[$book['author']]++;
-            if ($authors[$book['author']] > $max) {
+            if ($authors[$book['author']] > $max && $book['author'] != "") {
                 return $book['author'];
             }
         }

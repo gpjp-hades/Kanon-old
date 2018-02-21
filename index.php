@@ -7,7 +7,7 @@ require_once "lib/autoloader.php";
 new class {
 	function __construct() {
 
-		$this->db = new \lib\db();
+		$this->db = new \lib\db("db/kanon.csv");
 
 		if (!isset($_SESSION['books']))
 			$_SESSION['books'] = [];
@@ -74,14 +74,13 @@ new class {
 					isset($_POST['myBooks']) &&
 					in_array($_POST['myBooks'], $_SESSION['books'])
 				) {
-
-					unset($_SESSION['books'][$_POST['myBooks']]);
+					unset($_SESSION['books'][array_search($_POST['myBooks'], $_SESSION['books'])]);
 					$_SESSION['books'] = array_values($_SESSION['books']); //reindex
 
 					$this->loadBooks();
 					\lib\autoloader::getTemplate("index");
 				} else {
-					
+
 					$GLOBALS['state'] = "error";
 					$GLOBALS['message'] = "Kniha nenalezena";
 
@@ -93,7 +92,7 @@ new class {
 					$validate = new \lib\validate($this->db);
 					if ($validate->failed) {
 						$GLOBALS['state'] = "info";
-						$GLOBALS['title'] = "Nezvolili jste dostatek děl";
+						$GLOBALS['title'] = "Nezvolili jste dost děl z jednotlivých období";
 						$GLOBALS['message'] = $validate->getRegionMessage();
 
 						$this->loadBooks();
