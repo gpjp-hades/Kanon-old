@@ -37,7 +37,13 @@
 				return false;
 			}
 			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip(); 
+				$('[data-toggle="tooltip"]').tooltip();
+				$("#search").on("keyup", function() {
+					var value = $(this).val().toLowerCase();
+					$("#book option").filter(function() {
+						$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+					});
+				});
 		});
 		</script>
 	</head>

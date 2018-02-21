@@ -7,7 +7,7 @@
     <div class="col-sm-2">
 			<div class="form-group">
 				<label for="name">Jméno:</label>
-				<input type="text" name="name" class="form-control" id="name" value="<?=$_SESSION['vars']['name']?>" autofocus required />
+				<input type="text" name="name" class="form-control" id="name" value="<?=$_SESSION['vars']['name']?>" required />
 			</div>
 			<div class="form-group">
 				<label for="surname">Příjmení:</label>
@@ -26,10 +26,11 @@
     <div class="col-sm-5">
 			<div class="form-group">
 				<label for="book">Školní kánon:</label>
-				<select name="book" id="book" class="form-control" size="29" ondblclick="send('add')">
+				<input id="search" class="form-control" placeholder="Vyhledávejte" autofocus></input><br />
+				<select name="book" id="book" style="overflow: auto;" class="form-control" size="26" ondblclick="send('add')">
 		<?php
 			foreach($GLOBALS['books'] as $id => $book) {
-				echo "<option value='$id'>$book[name] : $book[author] : $book[region]</option>";
+				echo "<option value='$id'>$book[author]" . ($book['author'] == ""?"":": ") . "$book[name] ($book[region])</option>";
 			}
 		?>
 				</select>
@@ -45,10 +46,10 @@
     <div class="col-sm-3">
 		<div class="form-group">
 		<label for="myBooks">Můj kánon: (<?=count($GLOBALS['myBooks'])?>/<?=\lib\local::BOOKS?>)</label>
-		<select name="myBooks" id="myBooks" class="form-control" size="26" ondblclick="send('remove')">
+		<select name="myBooks" id="myBooks" style="overflow: auto" class="form-control" size="26" ondblclick="send('remove')">
 			<?php
 				foreach($GLOBALS['myBooks'] as $id => $book) {
-					echo "<option value='$id'>$book[name] : $book[author] : $book[region]</option>";
+					echo "<option value='$id'>$book[author]" . ($book['author'] == ""?"":": ") . "$book[name] ($book[region])</option>";
 				}
 			?>
 		</select>
