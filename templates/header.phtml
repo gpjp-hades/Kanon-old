@@ -32,25 +32,6 @@
 			}
 		</style>
 		<script>
-
-			/*
-			remember scroll /needs to be implemented
-			$.fn.scrollPosReaload = function(){
-				if (localStorage) {
-					var posReader = localStorage["posStorage"];
-					if (posReader) {
-						$(window).scrollTop(posReader);
-						localStorage.removeItem("posStorage");
-					}
-					$(this).click(function(e) {
-						localStorage["posStorage"] = $(window).scrollTop();
-					});
-
-					return true;
-				}
-
-				return false;
-			} */
 			function checkIE() {
 				var ua = window.navigator.userAgent;
 				return (
@@ -78,7 +59,22 @@
 					});
 				});
 				$('#myModal').modal('show')
+				$('#book').scrollPosReaload()
 			});
+			$.fn.scrollPosReaload = function(){
+				if (localStorage) {
+					var posReader = localStorage["posStorage"];
+					if (posReader) {
+						$(this).scrollTop(posReader);
+						localStorage.removeItem("posStorage");
+					}
+					$(this).click(function(e) {
+						localStorage["posStorage"] = $(this).scrollTop();
+					});
+					return true;
+				}
+				return false;
+			}
 		</script>
 	</head>
 	<body>
