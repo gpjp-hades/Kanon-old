@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf8" />
 		<meta name="author" content="Keombre" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<link rel="icon" href="<?=\lib\autoloader::ROOT?>/cropped-favicon-192x192.png">
 		<title>Zadání maturitního kánonu</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -31,20 +32,38 @@
 			}
 		</style>
 		<script>
-			function warnIE() {
+
+			/*
+			remember scroll /needs to be implemented
+			$.fn.scrollPosReaload = function(){
+				if (localStorage) {
+					var posReader = localStorage["posStorage"];
+					if (posReader) {
+						$(window).scrollTop(posReader);
+						localStorage.removeItem("posStorage");
+					}
+					$(this).click(function(e) {
+						localStorage["posStorage"] = $(window).scrollTop();
+					});
+
+					return true;
+				}
+
+				return false;
+			} */
+			function checkIE() {
 				var ua = window.navigator.userAgent;
-				if (
+				return (
 					ua.indexOf('MSIE ') > -1 ||
 					ua.indexOf('Trident/') > -1 ||
-					ua.indexOf('Edge/') > -1
-				) {
-					alert("Používáte nepodporovaný prohlížeč. Internet Explorer a Edge nefungují.\n\nZvažte přechod na jakýkoliv jiný prohlížeč.");
-				}
+					ua.indexOf('Edge/') > -1);
 			}
-			warnIE();
 			function send(type) {
 				let form = document.getElementById("form");
-				if (form.reportValidity()) {
+				if (checkIE()) {
+					document.getElementById("form_state").value = type;
+					document.getElementById("form").submit();
+				} else if (form.reportValidity()) {
 					document.getElementById("form_state").value = type;
 					document.getElementById("form").submit();
 				}
