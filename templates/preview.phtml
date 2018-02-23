@@ -20,18 +20,16 @@
 					</div>
 				</div>
 				<h3>Kánon <?=date("Y")?></h3>
-				<div class="table-responsive">
-					<table style="table">
-						<tr>
-							<td>Jméno:&nbsp;&nbsp;</td>
-							<td><strong><?= $GLOBALS['name'] . " " . $GLOBALS['surname']?></strong></td>
-						</tr>
-						<tr>
-							<td>Třída: </td>
-							<td><strong><?= $GLOBALS['class']?></strong></td>
-						</tr>
-					</table>
-				</div>
+				<table style="table">
+					<tr>
+						<td>Jméno:&nbsp;&nbsp;</td>
+						<td><strong><?= $GLOBALS['name'] . " " . $GLOBALS['surname']?></strong></td>
+					</tr>
+					<tr>
+						<td>Třída: </td>
+						<td><strong><?= $GLOBALS['class']?></strong></td>
+					</tr>
+				</table>
 				<hr>
 				<h4>Knihy</h4>
 				<table class="table table-hover table-condensed">
@@ -49,16 +47,18 @@ foreach($GLOBALS['books'] as $id => $book) {
 				</table>
 			</div>
 		</form>
-		<hr class="no-print">
-		<div class="no-print container text-center" style="margin-bottom: 20px;">
-		<small style="margin: 0 15px;"><strong>Kánon:</strong> Mgr. Martina Urbanová, <strong>Koncept:</strong> Ing. David Švarc, <strong>Aplikace:</strong> Jan Wijnhorst <a target="_blank" href="https://github.com/keombre">@keombre</a></small>
-			<small>
-				<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
-					<img alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" />
-				</a>
-				<br />Toto dílo podléhá licenci
-				<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Uveďte původ-Neužívejte komerčně 4.0 Mezinárodní License</a>.
-			</small>
-		</div>
+		<footer class="footer no-print">
+			<div class="container text-center">
+				<hr style="margin: 0 0 9px 0;">
+				<small style="margin: 0 15px;"><strong>Kánon:</strong> Mgr. Martina Urbanová, <strong>Koncept:</strong> Ing. David Švarc, <strong>Aplikace:</strong> Jan Wijnhorst <a target="_blank" href="https://github.com/keombre">@keombre</a></small>
+				<small>
+					<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+						<img alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" />
+					</a>
+					<br />Toto dílo podléhá licenci
+					<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Uveďte původ-Neužívejte komerčně 4.0 Mezinárodní License</a>.
+				</small>
+			</div>
+		</footer>
 	</body>
 </html>

@@ -2,9 +2,9 @@
 		<form id="form" method="POST">
 			<input type="hidden" name="state" id="form_state" />
 			<?=\lib\csrf::printHTML("\t\t\t")?>
-			<div class="container">
+			<div class="container main">
 				<div class="row">
-					<div class="col-sm-2">
+					<div class="col-sm-2 col-xs-5">
 						<div class="form-group">
 							<label for="name">Jméno:</label>
 							<input type="text" name="name" class="form-control" id="name" value="<?=$_SESSION['vars']['name']?>" required />
@@ -23,7 +23,7 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-sm-5">
+					<div class="col-sm-5 col-xs-6">
 						<div class="form-group">
 							<label for="book">Školní kánon:</label>
 							<input id="search" class="form-control" placeholder="Vyhledávejte" autofocus />
@@ -41,7 +41,7 @@ foreach($GLOBALS['books'] as $name => $regions) {
 							</select>
 						</div>
 					</div>
-					<div class="col-sm-2">
+					<div class="col-sm-2 col-xs-6">
 						<div class="my-buttons">
 							<button class="form-control btn btn-default" onclick="send('add')">
 								Přidat <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
@@ -54,7 +54,7 @@ foreach($GLOBALS['books'] as $name => $regions) {
 							</button>
 						</div>
 					</div>
-					<div class="col-sm-3">
+					<div class="col-sm-3 col-xs-12">
 						<div class="form-group">
 							<label for="myBooks">Můj kánon: (<?=count($_SESSION['books'])?>/<?=\lib\local::BOOKS?>)</label>
 							<select name="myBooks" id="myBooks" style="overflow: auto" class="form-control" size="26" ondblclick="send('remove')">
@@ -77,17 +77,19 @@ foreach($GLOBALS['myBooks'] as $name => $regions) {
 				</div>
 			</div>
 		</form>
-		<hr style="margin-top: 0;">
-		<div class="no-print container text-center" style="margin-bottom: 20px;">
-			<small style="margin: 0 15px;"><strong>Kánon:</strong> Mgr. Martina Urbanová, <strong>Koncept:</strong> Ing. David Švarc, <strong>Aplikace:</strong> Jan Wijnhorst <a target="_blank" href="https://github.com/keombre">@keombre</a></small>
-			<small>
-				<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
-					<img alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" />
-				</a>
-				<br />Toto dílo podléhá licenci
-				<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Uveďte původ-Neužívejte komerčně 4.0 Mezinárodní License</a>.
-			</small>
-		</div>
+		<footer class="footer no-print">
+			<div class="container text-center">
+				<hr style="margin: 0 0 9px 0;">
+				<small style="margin: 0 15px;"><strong>Kánon:</strong> Mgr. Martina Urbanová, <strong>Koncept:</strong> Ing. David Švarc, <strong>Aplikace:</strong> Jan Wijnhorst <a target="_blank" href="https://github.com/keombre">@keombre</a></small>
+				<small>
+					<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+						<img alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" />
+					</a>
+					<br />Toto dílo podléhá licenci
+					<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Uveďte původ-Neužívejte komerčně 4.0 Mezinárodní License</a>.
+				</small>
+			</div>
+		</footer>
 		<div id="clearModal" class="modal fade" role="dialog">
 			<div class="modal-dialog">
 				<div class="modal-content">

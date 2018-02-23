@@ -12,7 +12,17 @@
 		<style>
 			@media (min-width: 768px) {
 				.my-buttons {
-					margin-top: 100%;
+					margin-top: 180px;
+				}
+			}
+			@media (min-width: 768px) and (max-width: 992px) {
+				.main {
+					width: 98%;
+				}
+			}
+			@media (min-width: 992px) and (max-width: 1200px) {
+				.main {
+					width: 95%;
 				}
 			}
 			@media print {    
@@ -30,50 +40,72 @@
 			#myBooks option {
 				margin-bottom: 2px;
 			}
+			html {
+				position: relative;
+				min-height: 100%;
+			}
+			body {
+				margin-bottom: 60px;
+			}
+			.footer {
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				height: 60px;
+				background-color: #f5f5f5;
+			}
 		</style>
 		<script>
-			function checkIE() {
-				var ua = window.navigator.userAgent;
+			let checkIE = () => {
+				let ua = window.navigator.userAgent
 				return (
 					ua.indexOf('MSIE ') > -1 ||
 					ua.indexOf('Trident/') > -1 ||
-					ua.indexOf('Edge/') > -1);
+					ua.indexOf('Edge/') > -1)
 			}
-			function send(type) {
-				let form = document.getElementById("form");
+			let send = (type) => {
+				let form = $("#form")
 				if (checkIE()) {
-					document.getElementById("form_state").value = type;
-					document.getElementById("form").submit();
+					$("#form_state").value = type
+					form.submit()
 				} else if (form.reportValidity()) {
-					document.getElementById("form_state").value = type;
-					document.getElementById("form").submit();
+					$("#form_state").value = type
+					form.submit()
 				}
-				return false;
+				return false
 			}
-			$(document).ready(function(){
-				$('[data-toggle="tooltip"]').tooltip();
-				$("#search").on("keyup", function() {
-					var value = $(this).val().toLowerCase();
-					$("#book option").filter(function() {
+			$(document).ready(_ => {
+				$('[data-toggle="tooltip"]').tooltip()
+				$("#search").on("keyup", _ => {
+					let value = $(this).val().toLowerCase()
+					$("#book option").filter(_ => {
 						$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-					});
-				});
+					})
+				})
 				$('#myModal').modal('show')
-				$('#book').scrollPosReaload()
-			});
-			$.fn.scrollPosReaload = function(){
+				$('#book').scrollPosReaload().resizeBook()
+				$(window).resize(_ => {
+					$('#book').resizeBook()
+				})
+			})
+
+			$.fn.resizeBook = function() {
+				$('#book').attr("size", $(window).width() < 768 ? "0" : "25")
+				return this
+			}
+			
+			$.fn.scrollPosReaload = function() {
 				if (localStorage) {
-					var posReader = localStorage["posStorage"];
+					let posReader = localStorage["posStorage"]
 					if (posReader) {
 						$(this).scrollTop(posReader);
-						localStorage.removeItem("posStorage");
+						localStorage.removeItem("posStorage")
 					}
 					$(this).click(function(e) {
-						localStorage["posStorage"] = $(this).scrollTop();
-					});
-					return true;
+						localStorage["posStorage"] = $(this).scrollTop()
+					})
 				}
-				return false;
+				return this
 			}
 		</script>
 	</head>
@@ -86,6 +118,11 @@
 				</div>
 			</div>
 		</nav>
+		<noscript>
+			<div class="container text-center">
+				<h1 class="text-danger">JavaScript zakázán</h1><h2><strong>Tento web nebude fungovat.</strong></h1>
+			</div>
+		</noscript>
 <?php if (isset($GLOBALS['state'])):?>
 		<div class="container no-print" style="position: fixed; width: 100%; z-index: 5;">
 			<div class="row">
