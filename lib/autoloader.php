@@ -14,7 +14,7 @@ final class autoloader {
 	public const LIBS = ["lib"];
 	public const TEMPLATES = "templates";
 	public const ROOT = "/kanon/";
-	public const WWWROOT = "/subdom/matlist";
+	public const WWWROOT = "/kanon";
 	
 	function __destruct() {
 		if (isset($_GET['DEBUG'])) {
