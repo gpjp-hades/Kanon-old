@@ -65,11 +65,12 @@
 			}
 			let send = (type) => {
 				let form = $("#form")
+				console.log(form)
 				if (checkIE()) {
-					$("#form_state").value = type
+					$("#form_state").attr('value', type)
 					form.submit()
-				} else if (form.reportValidity()) {
-					$("#form_state").value = type
+				} else if (form.get(0).reportValidity()) {
+					$("#form_state").attr('value', type)
 					form.submit()
 				}
 				return false
