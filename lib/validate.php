@@ -6,6 +6,7 @@ class validate {
 
     private $books = [];
     public $failed = false;
+    private $countRegions;
     
     function __construct($db) {
         $this->db = $db;
@@ -30,9 +31,9 @@ class validate {
 
         foreach ($this->region as $id => $region) {
             if ($region) {
-                $ret .= "<span class='text-success'>" . \lib\local::GRAPHICONS['ok'] . \lib\local::REGIONS[$id] . "</span><br />" . PHP_EOL;
+                $ret .= "<span class='text-success'>" . \lib\local::GRAPHICONS['ok'] . \lib\local::REGIONS[$id] . " (" . $this->countRegions[$id] . "/" .  \lib\local::MIN_REGIONS[$id] . ")</span><br />" . PHP_EOL;
             } else {
-                $ret .= "<strong class='text-danger'>" . \lib\local::GRAPHICONS['failed'] . \lib\local::REGIONS[$id] . "</strong><br />" . PHP_EOL;
+                $ret .= "<strong class='text-danger'>" . \lib\local::GRAPHICONS['failed'] . \lib\local::REGIONS[$id] . " (" . $this->countRegions[$id] . "/" .  \lib\local::MIN_REGIONS[$id] . ")</strong><br />" . PHP_EOL;
             }
         }
 
@@ -62,18 +63,18 @@ class validate {
     }
 
     function checkRegion(array $required) {
-        $count = [];
+        $this->countRegions = [];
         foreach ($this->books as $book) {
-            if (!isset($count[$book['region']]))
-                $count[$book['region']] = 0;
+            if (!isset($this->countRegions[$book['region']]))
+                $this->countRegions[$book['region']] = 0;
             
-            $count[$book['region']]++;
+            $this->countRegions[$book['region']]++;
         }
 
         $ret = [];
         
         foreach ($required as $id => $min) {
-            $ret[$id] = isset($count[$id]) && $count[$id] >= $min;
+            $ret[$id] = isset($this->countRegions[$id]) && $this->countRegions[$id] >= $min;
         }
 
         return $ret;
