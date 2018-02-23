@@ -9,9 +9,7 @@ new class {
 	function __construct() {
 
 		$this->autoloader = new \lib\autoloader();
-
-		echo "hola";
-		echo $asdfadsff;
+		
 		$this->db = new \lib\db("../db/kanon.csv");
 		
 		$this->checkPreview();
