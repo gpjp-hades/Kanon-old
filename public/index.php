@@ -8,6 +8,10 @@ new class {
 
 	function __construct() {
 
+		$this->autoloader = new \lib\autoloader();
+
+		echo "hola";
+		echo $asdfadsff;
 		$this->db = new \lib\db("../db/kanon.csv");
 		
 		$this->checkPreview();
@@ -43,8 +47,8 @@ new class {
 	function checkPreview() {
 		if ($_SERVER['REQUEST_URI'] != \lib\autoloader::ROOT . "/preview")
 			return false;
-		
-		new \lib\preview($this->db);
+
+		new \lib\preview($this->db, $this->autoloader);
 		exit();
 	}
 
@@ -131,7 +135,7 @@ new class {
 		$GLOBALS['message'] = $message;
 
 		$this->loadBooks();
-		\lib\autoloader::getTemplate($template);
+		$this->autoloader->getTemplate($template);
 	}
 
 	function loadBooks() {

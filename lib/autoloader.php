@@ -2,15 +2,36 @@
 
 namespace lib;
 
+ob_start();
+
 final class autoloader {
 
-	static $log = [];
+	private $display = "";
+	private $shouldDisplay = true;
+
+	private $log = [];
 
 	public const LIBS = ["lib"];
 	public const TEMPLATES = "templates";
-	public const ROOT = "/Kanon";
+	public const ROOT = "/kanon";
+	
+	function __destruct() {
+		if (isset($_GET['DEBUG'])) {
+			// if DEBUG then get debug buffer
+			echo ob_get_clean();
+			$log = $this->getLog();
+			if (!empty($log))
+			print_r($log);
+		} else {
+			//else display basic output
+			ob_end_clean();
+			echo $this->display;
+		}
+		flush();
+	}
 
 	function __construct() {
+
 		$final = [];
 		foreach ($this::LIBS as $path) {
 			$final = \array_merge($final, glob($_SERVER['DOCUMENT_ROOT'] . \lib\autoloader::ROOT . "/$path/*.{php}", GLOB_BRACE));
@@ -20,33 +41,41 @@ final class autoloader {
 			try {
 				$this->require($file);
 			} catch (\Exception $e) {
-				\lib\autoloader::log("autoloader", $e);
+				$this->log("autoloader", $e);
 			}
 		}
 	}
 
-	public static function getTemplate(string $name) {
+	public function getTemplate(string $name) {
 		$fname = $_SERVER['DOCUMENT_ROOT'] . \lib\autoloader::ROOT . "/" . \lib\autoloader::TEMPLATES . "/" . $name . ".phtml";
 		if (!is_file($fname))
 			return false;
 		\lib\csrf::wipe();
-		return \lib\autoloader::require($fname);
+		//pause debug buffer
+		$pause = ob_get_contents();
+		//clean buffer
+		ob_clean();
+		//get required file
+		$ret = $this->require($fname);
+		//save output of required file
+		$this->display = ob_get_contents();
+		//resume debug buffer
+		echo $pause;
+		return $ret;
 	}
 
-	static function log(string $source, string $event) {
-		return array_push(\lib\autoloader::log, [$source, $event]);
+	function log(string $source, string $event) {
+		return array_push($this->log, [$source, $event]);
 	}
 
-	static function getLog() {
-		return \lib\autoloader::log;
+	function getLog() {
+		return $this->log;
 	}
 
-	private static function require(string $fname) {
+	private function require(string $fname) {
 		if (!is_file($fname))
 			return false;
 
 		return require_once $fname;
 	}
 }
-
-new \lib\autoloader;

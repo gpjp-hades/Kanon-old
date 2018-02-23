@@ -3,9 +3,10 @@
 namespace lib;
 
 class preview {
-    function __construct($db) {
+    function __construct($db, $autoloader) {
 
         $this->db = $db;
+        $this->autoloader = $autoloader;
         
         if (!$this->checkVars()) {
             header("Location: " . \lib\autoloader::ROOT);
@@ -53,7 +54,7 @@ class preview {
             "print" => $_SESSION['print']
         ]);
 
-        \lib\autoloader::getTemplate("preview");
+        $this->autoloader->getTemplate("preview");
 
     }
 
