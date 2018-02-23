@@ -43,7 +43,7 @@ new class {
 
 	
 	function checkPreview() {
-		if ($_SERVER['REQUEST_URI'] != \lib\autoloader::ROOT . "/preview")
+		if ($_SERVER['REQUEST_URI'] != \lib\autoloader::ROOT . "preview")
 			return false;
 
 		new \lib\preview($this->db, $this->autoloader);
@@ -119,7 +119,7 @@ new class {
 				if ($validate->failed) {
 					$this->display("index", "info", $validate->getRegionMessage(), \lib\local::REGION_FAIL_TITLE);
 				} else {
-					header("Location: ".\lib\autoloader::ROOT."/preview");
+					header("Location: ".\lib\autoloader::ROOT."preview");
 				}
 			} catch (\Exception $e) {
 			$this->display("index", "error", $e->getMessage());

@@ -13,7 +13,8 @@ final class autoloader {
 
 	public const LIBS = ["lib"];
 	public const TEMPLATES = "templates";
-	public const ROOT = "/kanon";
+	public const ROOT = "/kanon/";
+	public const WWWROOT = "/subdom/matlist";
 	
 	function __destruct() {
 		if (isset($_GET['DEBUG'])) {
@@ -34,7 +35,7 @@ final class autoloader {
 
 		$final = [];
 		foreach ($this::LIBS as $path) {
-			$final = \array_merge($final, glob($_SERVER['DOCUMENT_ROOT'] . \lib\autoloader::ROOT . "/$path/*.{php}", GLOB_BRACE));
+			$final = \array_merge($final, glob($_SERVER['DOCUMENT_ROOT'] . \lib\autoloader::WWWROOT . "/$path/*.{php}", GLOB_BRACE));
 		}
 
 		foreach ($final as $file) {
@@ -47,7 +48,7 @@ final class autoloader {
 	}
 
 	public function getTemplate(string $name) {
-		$fname = $_SERVER['DOCUMENT_ROOT'] . \lib\autoloader::ROOT . "/" . \lib\autoloader::TEMPLATES . "/" . $name . ".phtml";
+		$fname = $_SERVER['DOCUMENT_ROOT'] . \lib\autoloader::WWWROOT . "/" . \lib\autoloader::TEMPLATES . "/" . $name . ".phtml";
 		if (!is_file($fname))
 			return false;
 		\lib\csrf::wipe();
