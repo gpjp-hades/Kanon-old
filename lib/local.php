@@ -9,9 +9,15 @@ class local {
     const BOOK_NOT_FOUND    = "Kniha nenalezena";
     const CLEARED           = "Kánon vyčištěn";
     const NO_BOOK_SELECTED  = "Žádná kniha nezvolena";
+    const NO_LIST_SELECTED  = "Žádný kánon nezvolen";
+    const NO_LIST_FOUND     = "Kánon nenalezen";
     const REGION_FAIL_TITLE = "Nezvolili jste dostatečný počet děl z jednotlivých období";
     const SAVE_FAILED       = "Odeslání se nepodařilo";
     const SAVE_SUCCESS      = "Kánon odeslán";
+    const LIST_PRESENT      = "Kánon již přidán";
+    const LIST_REMOVED      = "Kánon odebrán";
+    const LIST_DOWN_EMPTY   = "Není co stahovat";
+    const LIST_DOWN_ERROR   = "Archiv nelze vytvořit";
 
     const MISSING_UNAME     = "Vyplňtě jméno";
     const MISSING_CLASS     = "Vyberte třídu";

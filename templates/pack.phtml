@@ -1,0 +1,49 @@
+<?php \lib\autoloader::getLayout('header')?>
+		<div class="container">
+			<form id="form" method="POST" class="form form-horizontal">
+				<input type="hidden" name="state" id="form_state" />
+				<?=\lib\csrf::printHTML("\t\t\t\t")?>
+				<div class="form-group">
+					<label for="form_value" class="control-label col-sm-offset-2 col-sm-2">Kód kánonu:</label>
+					<div class="col-sm-4">
+						<input type="text" name="code" class="form-control" id="form_value" autofocus />
+					</div>
+					<div class="col-sm-2">
+						<button class="btn btn-default" onclick="send('add')">Přidat</button>
+					</div>
+				</div>
+			</form>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Jméno</th>
+						<th>Třída</th>
+						<th>Čas</th>
+						<th>Číslo</th>
+						<th></th>
+					</tr>
+				</thead>
+<?php
+foreach($GLOBALS['list'] as $id => $person) {
+	echo "\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>$person[name]</td>\n\t\t\t\t\t\t<td>$person[class]</td>\n\t\t\t\t\t\t<td>$person[time]</td>\n\t\t\t\t\t\t<td>$person[code]</td>\n\t\t\t\t\t\t<td><button class='btn btn-danger btn-xs' onclick='send(\"remove\", $person[code])'>Odebrat</button></td>\n\t\t\t\t\t</tr>" . PHP_EOL;
+}
+?>
+			</table>
+			<button class="btn btn-success" onclick="send('download')">Stáhnout</button>
+			<button class="btn btn-danger pull-right" onclick="send('wipe')">Vymazat</button>
+		</div>
+		<footer class="footer no-print">
+			<div class="container text-center">
+				<hr>
+				<small><strong>Kánon:</strong> Mgr. Martina Urbanová, <strong>Koncept:</strong> Ing. David Švarc, <strong>Aplikace:</strong> Jan Wijnhorst <a target="_blank" href="https://github.com/keombre">@keombre</a></small>
+				<small>
+					<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
+						<img alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" />
+					</a>
+					<br />Toto dílo podléhá licenci
+					<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Uveďte původ-Neužívejte komerčně 4.0 Mezinárodní License</a>.
+				</small>
+			</div>
+		</footer>
+	</body>
+</html>

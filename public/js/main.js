@@ -5,14 +5,17 @@ let checkIE = () => {
         ua.indexOf('Trident/') > -1 ||
         ua.indexOf('Edge/') > -1)
 }
-let send = (type) => {
+let send = (type, value=null) => {
     let form = $("#form")
-    console.log(form)
     if (checkIE()) {
         $("#form_state").attr('value', type)
+        if (value)
+            $("#form_value").attr('value', value)
         form.submit()
     } else if (form.get(0).reportValidity()) {
         $("#form_state").attr('value', type)
+        if (value)
+            $("#form_value").attr('value', value)
         form.submit()
     }
     return false

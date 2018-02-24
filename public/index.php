@@ -12,6 +12,7 @@ new class {
 		
 		$this->db = new \lib\db("../db/kanon.csv");
 		
+		$this->checkPack();
 		$this->checkPreview();
 		$this->initVars();
 		$this->clearVars();
@@ -41,7 +42,14 @@ new class {
 		}
 	}
 
-	
+	function checkPack() {
+		if (strpos($_SERVER['REQUEST_URI'], \lib\autoloader::ROOT . "download") !== 0)
+			return false;
+
+		new \lib\pack($this->db, $this->autoloader);
+		exit();
+	}
+
 	function checkPreview() {
 		if (strpos($_SERVER['REQUEST_URI'], \lib\autoloader::ROOT . "preview") !== 0)
 			return false;
