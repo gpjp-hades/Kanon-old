@@ -47,22 +47,44 @@ final class autoloader {
 		}
 	}
 
+	public function downloadFile(string $fname, string $downName = null) {
+		if (is_null($downName))
+			$downName = $fname;
+		
+		\lib\csrf::wipe();
+
+		ob_start();
+		
+		if (file_exists($fname)) {
+			header('Content-Description: File Transfer');
+			header('Content-Type: application/octet-stream');
+			header('Content-Disposition: attachment; filename="'.$downName.'"');
+			header('Expires: 0');
+			header('Cache-Control: must-revalidate');
+			header('Pragma: public');
+			header('Content-Length: ' . filesize($fname));
+			readfile($fname);
+		}
+		$this->display = ob_get_clean();
+	}
+
 	public function getTemplate(string $name) {
 		$fname = $_SERVER['DOCUMENT_ROOT'] . \lib\autoloader::WWWROOT . "/" . \lib\autoloader::TEMPLATES . "/" . $name . ".phtml";
 		if (!is_file($fname))
 			return false;
 		\lib\csrf::wipe();
-		//pause debug buffer
-		$pause = ob_get_contents();
-		//clean buffer
-		ob_clean();
-		//get required file
+		ob_start();
 		$ret = $this->require($fname);
-		//save output of required file
-		$this->display = ob_get_contents();
-		//resume debug buffer
-		echo $pause;
+		$this->display = ob_get_clean();
 		return $ret;
+	}
+
+	public static function getLayout(string $name) {
+		$fname = $_SERVER['DOCUMENT_ROOT'] . \lib\autoloader::WWWROOT . "/" . \lib\autoloader::TEMPLATES . "/" . $name . ".phtml";
+		if (!is_file($fname))
+			return false;
+		
+		return \lib\autoloader::require($fname);
 	}
 
 	function log(string $source, string $event) {
