@@ -36,9 +36,9 @@ $.fn.scrollPosReaload = function() {
 }
 $(document).ready(_ => {
     $('[data-toggle="tooltip"]').tooltip()
-    $("#search").on("keyup", _ => {
+    $("#search").on("keyup", function() {
         let value = $(this).val().toLowerCase()
-        $("#book option").filter(_ => {
+        $("#book option").filter(function() {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         })
     })
