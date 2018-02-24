@@ -8,7 +8,6 @@ final class autoloader {
 
 	private $display = "";
 	private $shouldDisplay = true;
-
 	private $log = [];
 
 	public const LIBS = ["lib"];
@@ -17,21 +16,27 @@ final class autoloader {
 	public const WWWROOT = "/kanon";
 	
 	function __destruct() {
+		$log = $this->getLog();
 		if (isset($_GET['DEBUG'])) {
-			// if DEBUG then get debug buffer
 			echo ob_get_clean();
-			$log = $this->getLog();
 			if (!empty($log))
-			print_r($log);
+				echo "<xmp>" . print_r($log, true) . "</xmp>";
 		} else {
-			//else display basic output
+			if (!empty($log))
+				$this->getTemplate('derpy');
 			ob_end_clean();
 			echo $this->display;
 		}
 		flush();
 	}
 
+	function errorHandler(int $errno, string $errstr, string $errfile, int $errline) {
+		$this->log($errfile, "Error: " . $errno . ", with message: " . $errstr . ", in file: " . $errfile . ", on line: " . $errline . ", Backtrace: " . print_r(debug_backtrace(), true));
+	}
+
 	function __construct() {
+
+		set_error_handler([$this, "errorHandler"], \E_ALL);
 
 		$final = [];
 		foreach ($this::LIBS as $path) {
@@ -95,7 +100,7 @@ final class autoloader {
 		return $this->log;
 	}
 
-	private function require(string $fname) {
+	private static function require(string $fname) {
 		if (!is_file($fname))
 			return false;
 
