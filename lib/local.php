@@ -8,8 +8,8 @@ class local {
     const UNKNOWN_ACTION    = "Neznámá akce";
     const BOOK_NOT_FOUND    = "Kniha nenalezena";
     const CLEARED           = "Kánon vyčištěn";
-    const NO_BOOK_SELECTED  = "Žádná kniha nevybraná";
-    const REGION_FAIL_TITLE = "Nezvolili jste dost děl z jednotlivých období";
+    const NO_BOOK_SELECTED  = "Žádná kniha nezvolena";
+    const REGION_FAIL_TITLE = "Nezvolili jste dostatečný počet děl z jednotlivých období";
     const SAVE_FAILED       = "Odeslání se nepodařilo";
     const SAVE_SUCCESS      = "Kánon odeslán";
 

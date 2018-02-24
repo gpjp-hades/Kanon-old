@@ -106,7 +106,9 @@ new class {
 	}
 
 	function remove() {
-		if (isset($_POST['myBooks']) && in_array($_POST['myBooks'], $_SESSION['books'])) {
+		if (!isset($_POST['myBooks'])) {
+			$this->display("index", "error", \lib\local::NO_BOOK_SELECTED);
+		} else if (in_array($_POST['myBooks'], $_SESSION['books'])) {
 
 			unset($_SESSION['books'][array_search($_POST['myBooks'], $_SESSION['books'])]);
 			$_SESSION['books'] = array_values($_SESSION['books']); //reindex
