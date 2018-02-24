@@ -47,7 +47,7 @@ $(document).ready(_ => {
     $(window).resize(_ => {
         $('#book').resizeBook()
     })
-    $("#alert").fadeTo(3000, 500).slideUp(500, function(){
-        $("#alert").slideUp(500);
+    $("#alert").fadeTo(3000, 500).slideUp(300, _ => {
+        $("#alert").slideUp(300);
     });
 })
