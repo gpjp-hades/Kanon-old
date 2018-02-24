@@ -74,7 +74,10 @@ class preview {
 
 		$image = $barcode->render_image("ean-128", $code, [
 			"w" => 150,
-			"h" => 50,
+            "h" => 55,
+            "ts" => 2,
+            "th" => 13,
+            "pb" => 20
 		]);
 		
 		ob_start();
