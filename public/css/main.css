@@ -13,9 +13,15 @@
         width: 95%;
     }
 }
+.only-print, .only-print *  {
+    display: none;
+}
 @media print {    
     .no-print, .no-print * {
         display: none !important;
+    }
+    .only-print, .only-print *  {
+        display: initial !important;
     }
 }
 .my-buttons button {

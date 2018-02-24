@@ -17,7 +17,7 @@ class save {
         $this->class = $_SESSION['vars']['class'];
     }
 
-    function save(array $books) {
+    function save(array $books, string $code) {
         $path = $this->target . "/" . $this->class;
 
         if (!is_dir($path))
@@ -30,7 +30,7 @@ class save {
                         $book['author'] . ": " . $book['name'] . PHP_EOL;
         }
 
-        $fname = $this->slugify($this->name . " " . $this->surname . " " . date("H:i:s-d.m.Y")) . ".list";
+        $fname = $this->slugify($this->name . " " . $this->surname . " " . date("H:i:s-d.m.Y") . " " . $code) . ".list";
         file_put_contents($path . "/" . $fname, $content);
     }
 

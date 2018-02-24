@@ -19,7 +19,7 @@ new class {
 		if (isset($_POST['state']) && !empty($_POST['state'])) {
 
 			if (!\lib\csrf::check()) {
-				header("Location: .");
+				header("Location: " . \lib\autoloader::ROOT);
 				exit();
 			}
 
@@ -43,7 +43,7 @@ new class {
 
 	
 	function checkPreview() {
-		if ($_SERVER['REQUEST_URI'] != \lib\autoloader::ROOT . "preview")
+		if (strpos($_SERVER['REQUEST_URI'], \lib\autoloader::ROOT . "preview") !== 0)
 			return false;
 
 		new \lib\preview($this->db, $this->autoloader);
@@ -65,22 +65,27 @@ new class {
 
 	function checkVars() {
 		if (isset($_POST['name']) && !empty($_POST['name'])) {
-			if (@$_SESSION['name'] != $_POST['name'])
-				$_SESSION['print'] = false;
+			if (@$_SESSION['vars']['name'] != $_POST['name'])
+				$this->newCode();
 			$_SESSION['vars']['name'] = $_POST['name'];
 		}
 		
 		if (isset($_POST['surname']) && !empty($_POST['surname'])) {
-			if (@$_SESSION['surname'] != $_POST['surname'])
-				$_SESSION['print'] = false;
+			if (@$_SESSION['vars']['surname'] != $_POST['surname'])
+				$this->newCode();
 			$_SESSION['vars']['surname'] = $_POST['surname'];
 		}
 		
 		if (isset($_POST['class']) && !empty($_POST['class'])) {
-			if (@$_SESSION['class'] != $_POST['class'])
-				$_SESSION['print'] = false;
+			if (@$_SESSION['vars']['class'] != $_POST['class'])
+				$this->newCode();
 			$_SESSION['vars']['class'] = $_POST['class'];
 		}
+	}
+
+	function newCode() {
+		$_SESSION['print'] = false;
+		unset($_SESSION['barcode']);
 	}
 
 	function clearVars() {
@@ -92,7 +97,7 @@ new class {
 			$this->display("index", "error", \lib\local::NO_BOOK_SELECTED);
 		} else if ($this->db->has($_POST['book'])) {
 			array_push($_SESSION['books'], $_POST['book']);
-			$_SESSION['print'] = false;
+			$this->newCode();
 			$this->display();
 		} else {
 			$this->display("index", "error", \lib\local::BOOK_NOT_FOUND);
@@ -101,7 +106,7 @@ new class {
 
 	function wipe() {
 		$_SESSION['books'] = [];
-		$_SESSION['print'] = false;
+		$this->newCode();
 		$this->display("index", "success", \lib\local::CLEARED);
 	}
 
@@ -112,7 +117,7 @@ new class {
 
 			unset($_SESSION['books'][array_search($_POST['myBooks'], $_SESSION['books'])]);
 			$_SESSION['books'] = array_values($_SESSION['books']); //reindex
-			$_SESSION['print'] = false;
+			$this->newCode();
 			$this->display();
 		} else {
 			$this->display("index", "error", \lib\local::BOOK_NOT_FOUND);
