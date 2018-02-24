@@ -1,11 +1,11 @@
-let checkIE = () => {
+function checkIE () {
     let ua = window.navigator.userAgent
     return (
         ua.indexOf('MSIE ') > -1 ||
         ua.indexOf('Trident/') > -1 ||
         ua.indexOf('Edge/') > -1)
 }
-let send = (type, value=null) => {
+function send (type, value) {
     let form = $("#form")
     if (checkIE()) {
         $("#form_state").attr('value', type)
@@ -37,7 +37,7 @@ $.fn.scrollPosReaload = function() {
     }
     return this
 }
-$(document).ready(_ => {
+$(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip()
     $("#search").on("keyup", function() {
         let value = $(this).val().toLowerCase()
@@ -47,10 +47,10 @@ $(document).ready(_ => {
     })
     $('#myModal').modal('show')
     $('#book').scrollPosReaload().resizeBook()
-    $(window).resize(_ => {
+    $(window).resize(function() {
         $('#book').resizeBook()
     })
-    $("#alert").fadeTo(3000, 500).slideUp(300, _ => {
+    $("#alert").fadeTo(3000, 500).slideUp(300, function() {
         $("#alert").slideUp(300);
     });
 })
