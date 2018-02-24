@@ -64,14 +64,23 @@ new class {
 	}
 
 	function checkVars() {
-		if (isset($_POST['name']) && !empty($_POST['name']))
+		if (isset($_POST['name']) && !empty($_POST['name'])) {
+			if (@$_SESSION['name'] != $_POST['name'])
+				$_SESSION['print'] = false;
 			$_SESSION['vars']['name'] = $_POST['name'];
+		}
 		
-		if (isset($_POST['surname']) && !empty($_POST['surname']))
+		if (isset($_POST['surname']) && !empty($_POST['surname'])) {
+			if (@$_SESSION['surname'] != $_POST['surname'])
+				$_SESSION['print'] = false;
 			$_SESSION['vars']['surname'] = $_POST['surname'];
+		}
 		
-		if (isset($_POST['class']) && !empty($_POST['class']))
+		if (isset($_POST['class']) && !empty($_POST['class'])) {
+			if (@$_SESSION['class'] != $_POST['class'])
+				$_SESSION['print'] = false;
 			$_SESSION['vars']['class'] = $_POST['class'];
+		}
 	}
 
 	function clearVars() {
