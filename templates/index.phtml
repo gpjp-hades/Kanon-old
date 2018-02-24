@@ -28,7 +28,7 @@
 							<label for="book">Školní kánon:</label>
 							<input id="search" class="form-control" placeholder="Vyhledávejte" autofocus />
 							<br />
-							<select name="book" id="book" style="overflow: auto;" class="form-control" size="25" ondblclick="send('add')">
+							<select name="book" id="book" class="form-control" size="25" ondblclick="send('add')">
 <?php
 foreach($GLOBALS['books'] as $name => $regions) {
 	echo "\t\t\t\t\t\t\t\t<optgroup label='$name'>" . PHP_EOL;
@@ -57,7 +57,7 @@ foreach($GLOBALS['books'] as $name => $regions) {
 					<div class="col-sm-3 col-xs-12">
 						<div class="form-group">
 							<label for="myBooks">Můj kánon: (<?=count($_SESSION['books'])?>/<?=\lib\local::BOOKS?>)</label>
-							<select name="myBooks" id="myBooks" style="overflow: auto" class="form-control" size="26" ondblclick="send('remove')">
+							<select name="myBooks" id="myBooks" class="form-control" size="26" ondblclick="send('remove')">
 <?php
 foreach($GLOBALS['myBooks'] as $name => $regions) {
 	echo "\t\t\t\t\t\t\t\t<optgroup label='$name'>" . PHP_EOL;
@@ -79,8 +79,8 @@ foreach($GLOBALS['myBooks'] as $name => $regions) {
 		</form>
 		<footer class="footer no-print">
 			<div class="container text-center">
-				<hr style="margin: 0 0 9px 0;">
-				<small style="margin: 0 15px;"><strong>Kánon:</strong> Mgr. Martina Urbanová, <strong>Koncept:</strong> Ing. David Švarc, <strong>Aplikace:</strong> Jan Wijnhorst <a target="_blank" href="https://github.com/keombre">@keombre</a></small>
+				<hr>
+				<small class="footer-small" ><strong>Kánon:</strong> Mgr. Martina Urbanová, <strong>Koncept:</strong> Ing. David Švarc, <strong>Aplikace:</strong> Jan Wijnhorst <a target="_blank" href="https://github.com/keombre">@keombre</a></small>
 				<small>
 					<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">
 						<img alt="Licence Creative Commons" style="border-width:0" src="https://i.creativecommons.org/l/by-nc/4.0/80x15.png" />
