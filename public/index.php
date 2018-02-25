@@ -48,7 +48,7 @@ new class {
 		if (strpos($_SERVER['REQUEST_URI'], \lib\autoloader::ROOT . "download") !== 0)
 			return false;
 
-		new \lib\pack($this->db, $this->autoloader);
+		new \controller\pack($this->db, $this->autoloader);
 		exit();
 	}
 
@@ -71,7 +71,7 @@ new class {
 		if (strpos($_SERVER['REQUEST_URI'], \lib\autoloader::ROOT . "preview") !== 0)
 			return false;
 
-		$this->validate(function() {new \lib\preview($this->db, $this->autoloader);});
+		$this->validate(function() {new \controller\preview($this->db, $this->autoloader);});
 
 	}
 

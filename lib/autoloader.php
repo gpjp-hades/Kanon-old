@@ -10,7 +10,7 @@ final class autoloader {
 	private $shouldDisplay = true;
 	private $log = [];
 
-	public const LIBS = ["lib"];
+	public const LIBS = ["lib", "controller"];
 	public const TEMPLATES = "templates";
 	public const ROOT = "/kanon/";
 	public const WWWROOT = "/kanon";

@@ -1,6 +1,6 @@
 <?php
 
-namespace lib;
+namespace controller;
 
 class pack {
     function __construct($db, $autoloader) {
@@ -29,7 +29,7 @@ class pack {
                         "message" => \lib\local::LIST_PRESENT
                     ];
                 } else {
-                    $files = glob("../out/{a,b,c}/*-$_POST[code].list", GLOB_BRACE);
+                    $files = glob("../out/{a,b,c}/*".date("Y")."-$_POST[code].list", GLOB_BRACE);
                     if (count($files) != 1) {
                         $GLOBALS= [
                             "state" => "error",

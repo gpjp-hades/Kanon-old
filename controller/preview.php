@@ -1,6 +1,6 @@
 <?php
 
-namespace lib;
+namespace controller;
 
 class preview {
     function __construct($db, $autoloader) {

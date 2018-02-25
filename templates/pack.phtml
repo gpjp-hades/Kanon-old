@@ -25,7 +25,7 @@
 				</thead>
 <?php
 foreach($GLOBALS['list'] as $id => $person) {
-	echo "\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>$person[name]</td>\n\t\t\t\t\t\t<td>$person[class]</td>\n\t\t\t\t\t\t<td>$person[time]</td>\n\t\t\t\t\t\t<td>$person[code]</td>\n\t\t\t\t\t\t<td><button class='btn btn-danger btn-xs' onclick='send(\"remove\", $person[code])'>Odebrat</button></td>\n\t\t\t\t\t</tr>" . PHP_EOL;
+	echo "\t\t\t\t\t<tr>\n\t\t\t\t\t\t<td>$person[name]</td>\n\t\t\t\t\t\t<td>$person[class]</td>\n\t\t\t\t\t\t<td>$person[time]</td>\n\t\t\t\t\t\t<td>$person[code]</td>\n\t\t\t\t\t\t<td><button class='btn btn-danger btn-xs' onclick='send(\"remove\", \"$person[code]\")'>Odebrat</button></td>\n\t\t\t\t\t</tr>" . PHP_EOL;
 }
 ?>
 			</table>
