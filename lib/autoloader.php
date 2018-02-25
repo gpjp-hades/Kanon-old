@@ -31,7 +31,7 @@ final class autoloader {
 	}
 
 	function errorHandler(int $errno, string $errstr, string $errfile, int $errline) {
-		$this->log($errfile, "Error: " . $errno . ", with message: " . $errstr . ", in file: " . $errfile . ", on line: " . $errline . ", Backtrace: " . print_r(debug_backtrace(), true));
+		$this->log($errfile, "Error: " . $errno . ", with message: " . $errstr . ", in file: " . $errfile . ", on line: " . $errline);
 	}
 
 	function __construct() {

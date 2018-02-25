@@ -52,12 +52,27 @@ new class {
 		exit();
 	}
 
+	function validate(Callable $callback) {
+		try {
+			$validate = new \lib\validate($this->db);
+			if ($validate->failed) {
+				$this->display("index", "info", $validate->getRegionMessage(), \lib\local::REGION_FAIL_TITLE);
+			} else {
+				$callback();
+				exit();
+			}
+		} catch (\Exception $e) {
+			$this->display("index", "error", $e->getMessage());
+			exit();
+		}
+	}
+
 	function checkPreview() {
 		if (strpos($_SERVER['REQUEST_URI'], \lib\autoloader::ROOT . "preview") !== 0)
 			return false;
 
-		new \lib\preview($this->db, $this->autoloader);
-		exit();
+		$this->validate(function() {new \lib\preview($this->db, $this->autoloader);});
+
 	}
 
 	function initVars() {
@@ -77,19 +92,19 @@ new class {
 		if (isset($_POST['name']) && !empty($_POST['name'])) {
 			if (@$_SESSION['vars']['name'] != $_POST['name'])
 				$this->newCode();
-			$_SESSION['vars']['name'] = $_POST['name'];
+			$_SESSION['vars']['name'] = substr($_POST['name'], 0, 20) . (strlen($_POST['name']) > 20 ? "...":"");
 		}
 		
 		if (isset($_POST['surname']) && !empty($_POST['surname'])) {
 			if (@$_SESSION['vars']['surname'] != $_POST['surname'])
 				$this->newCode();
-			$_SESSION['vars']['surname'] = $_POST['surname'];
+			$_SESSION['vars']['surname'] = substr($_POST['surname'], 0, 30) . (strlen($_POST['surname']) > 30 ? "...":"");
 		}
 		
 		if (isset($_POST['class']) && !empty($_POST['class'])) {
 			if (@$_SESSION['vars']['class'] != $_POST['class'])
 				$this->newCode();
-			$_SESSION['vars']['class'] = $_POST['class'];
+			$_SESSION['vars']['class'] = substr($_POST['class'], 0, 1);
 		}
 	}
 
@@ -140,16 +155,9 @@ new class {
 		} else if (!isset($_POST['class']) || $_POST['class'] == '') {
 			$this->display("index", "error", \lib\local::MISSING_CLASS);
 		} else {
-			try {
-				$validate = new \lib\validate($this->db);
-				if ($validate->failed) {
-					$this->display("index", "info", $validate->getRegionMessage(), \lib\local::REGION_FAIL_TITLE);
-				} else {
-					header("Location: ".\lib\autoloader::ROOT."preview");
-				}
-			} catch (\Exception $e) {
-			$this->display("index", "error", $e->getMessage());
-			}
+			$this->validate(function() {
+				header("Location: ".\lib\autoloader::ROOT."preview");
+			});
 		}
 	}
 	
@@ -193,7 +201,8 @@ new class {
 	}
 
 	function replaceRegion($book) {
-		$book['region'] = \lib\local::REGIONS[$book['region']];
+		if ($this->db->has($book['id']))
+			$book['region'] = \lib\local::REGIONS[$book['region']];
 		return $book;
 	}
 };

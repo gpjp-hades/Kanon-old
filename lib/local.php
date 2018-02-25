@@ -18,6 +18,7 @@ class local {
     const LIST_REMOVED      = "Kánon odebrán";
     const LIST_DOWN_EMPTY   = "Není co stahovat";
     const LIST_DOWN_ERROR   = "Archiv nelze vytvořit";
+    const UNKNOWN_BOOKS     = "Kánon obsahuje neznámé knihy";
 
     const MISSING_UNAME     = "Vyplňtě jméno";
     const MISSING_CLASS     = "Vyberte třídu";
@@ -29,6 +30,15 @@ class local {
     const MIN_REGIONS   = [2, 3, 4, 5];
     const MAX_AUTHORS   = 2;
     const BOOKS         = 20;
+    const CLASSES       = [
+        "a" => "Oktáva A",
+        "b" => "Oktáva B",
+        "c" => "4. C"
+    ];
+    
+    static function CLASSNAME ($cls) {
+        return local::CLASSES[$cls] ?? "Neznámá třída";
+    }
 
     const REGIONS = [
         "Literatura do konce 18. století",

@@ -13,11 +13,7 @@ class preview {
             exit();
         }
 
-        $class = [
-            "a" => "Oktáva A",
-            "b" => "Oktáva B",
-            "c" => "4. C"
-        ][$_SESSION['vars']['class']];
+        $class = \lib\local::CLASSNAME($_SESSION['vars']['class']);
 
         $books = [];
 

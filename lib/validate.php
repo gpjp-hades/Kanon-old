@@ -10,7 +10,9 @@ class validate {
     
     function __construct($db) {
         $this->db = $db;
-        $this->books = $this->loadBooks();
+        
+        if (!($this->books = $this->loadBooks()))
+            throw new \Exception(\lib\local::UNKNOWN_BOOKS);
         
         if (!$this->checkCount())
             throw new \Exception(\lib\local::MORE_BOOKS);
@@ -43,6 +45,8 @@ class validate {
     function loadBooks() {
         $ret = [];
         foreach ($_SESSION['books'] as $book) {
+            if (!$this->db->has($book))
+                return false;
             array_push($ret,  array_merge(["id" => $book], $this->db->getInfo($book)));
         }
         return $ret;
