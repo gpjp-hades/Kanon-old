@@ -12,13 +12,15 @@ RewriteRule ^ index.php71 [QSA,L]");
 
 rename("index.php", "index.php71");
 
-$autolaoder = file_get_contents("../lib/autoloader.php");
-$autolaoder = str_replace([
+$autoloader = file_get_contents("../lib/autoloader.php");
+$autoloader = str_replace([
     "public const ROOT = \"/kanon/\";",
     "public const WWWROOT = \"/kanon\";"
 ], [
     "public const ROOT = \"/\";",
     "public const WWWROOT = \"/subdom/matlist\";"
-], $autolaoder);
+], $autoloader);
+
+file_put_contents("../lib/autoloader.php", $autoloader);
 
 unlink(__FILE__);
