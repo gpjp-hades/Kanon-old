@@ -1,7 +1,6 @@
-<?php \lib\autoloader::getLayout('header')?>
+<?php require __dir__."/layout/header.phtml"?>
 		<form id="form" method="POST">
 			<input type="hidden" name="state" id="form_state" />
-			<?=\lib\csrf::printHTML("\t\t\t")?>
 			<div class="container main">
 				<div class="row">
 					<div class="col-sm-2 col-xs-5">
@@ -18,7 +17,7 @@
 							<select name="class" class="form-control" id="class" required>
 								<option value="" disabled <?= $_SESSION['vars']['class']=="" ?"selected":""?>>Vyberte třídu</option>
 <?php
-foreach (\lib\local::CLASSES as $class => $name) {
+foreach ([] as $class => $name) {
 	echo "\t\t\t\t\t\t\t\t<option value='$class' " . ($_SESSION['vars']['class']==$class?"selected":"") . ">$name</option>" . PHP_EOL;
 }
 ?>
@@ -58,7 +57,7 @@ foreach($GLOBALS['books'] as $name => $regions) {
 					</div>
 					<div class="col-sm-3 col-xs-12">
 						<div class="form-group">
-							<label for="myBooks">Můj kánon: (<?=count($_SESSION['books'])?>/<?=\lib\local::BOOKS?>)</label>
+							<label for="myBooks">Můj kánon: (<?=count($_SESSION['books'])?>/)</label>
 							<select name="myBooks" id="myBooks" class="form-control" size="26" ondblclick="send('remove')">
 <?php
 foreach($GLOBALS['myBooks'] as $name => $regions) {

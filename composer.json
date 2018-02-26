@@ -2,14 +2,35 @@
     "name": "gpjp/kanon",
     "type": "project",
     "description": "Kanon PHP app",
+    
     "authors": [
         {
             "name": "Keombre",
             "email": "keombre8@gmail.com"
         }
     ],
+
     "require": {
+        
         "php": "^7.0",
-        "ext-gd": "*"
+        "ext-gd": "*",
+        "ext-pdo_sqlite": "*",
+
+        "slim/slim": "^3.0",
+        "catfan/Medoo": "^1.4",
+        "monolog/monolog": "^1.23",
+        "slim/php-view": "^2.2",
+        "slim/csrf": "^0.8.1",
+        "slim/flash": "^0.2.0",
+        "tecnickcom/tcpdf": "^6.2"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "": "app/",
+            "bootstrap\\": "bootstrap/",
+            "middleware\\": "app/middleware/",
+            "controller\\": "app/controller/"
+        }
     }
 }

@@ -1,5 +1,14 @@
 <?php
 
+$app = require __DIR__ . "/../bootstrap/app.php";
+
+new \bootstrap\router($app);
+
+$app->run();
+/*
+
+<?php
+
 error_reporting(E_ALL & ~(E_STRICT|E_NOTICE));
 
 session_start();
@@ -206,3 +215,5 @@ new class {
 		return $book;
 	}
 };
+
+*/
