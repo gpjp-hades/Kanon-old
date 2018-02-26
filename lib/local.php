@@ -37,7 +37,11 @@ class local {
     ];
     
     static function CLASSNAME ($cls) {
-        return local::CLASSES[$cls] ?? "Neznámá třída";
+        if (local::CLASSES[$cls] !== null) {
+            return local::CLASSES[$cls];
+        } else {
+            return "Neznámá třída";
+        }
     }
 
     const REGIONS = [

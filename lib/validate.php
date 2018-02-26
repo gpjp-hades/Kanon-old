@@ -52,7 +52,7 @@ class validate {
         return $ret;
     }
 
-    function checkAuthor(int $max) {
+    function checkAuthor($max) {
         $authors = [];
         foreach ($this->books as $book) {
             if (!isset($authors[$book['author']]))
@@ -66,7 +66,7 @@ class validate {
         return true;
     }
 
-    function checkRegion(array $required) {
+    function checkRegion($required) {
         $this->countRegions = [];
         foreach ($this->books as $book) {
             if (!isset($this->countRegions[$book['region']]))

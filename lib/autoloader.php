@@ -6,14 +6,14 @@ ob_start();
 
 final class autoloader {
 
+	const TEMPLATES = "templates";
+	const ROOT = "/matlist/";
+	const WWWROOT = "/matlist";
+	const LIBS = ["lib", "controller"];
+
 	private $display = "";
 	private $shouldDisplay = true;
 	private $log = [];
-
-	public const LIBS = ["lib", "controller"];
-	public const TEMPLATES = "templates";
-	public const ROOT = "/kanon/";
-	public const WWWROOT = "/kanon";
 	
 	function __destruct() {
 		$log = $this->getLog();
@@ -30,7 +30,7 @@ final class autoloader {
 		flush();
 	}
 
-	function errorHandler(int $errno, string $errstr, string $errfile, int $errline) {
+	function errorHandler($errno, $errstr, $errfile, $errline) {
 		$this->log($errfile, "Error: " . $errno . ", with message: " . $errstr . ", in file: " . $errfile . ", on line: " . $errline);
 	}
 
@@ -45,14 +45,14 @@ final class autoloader {
 
 		foreach ($final as $file) {
 			try {
-				$this->require($file);
+				$this->requireF($file);
 			} catch (\Exception $e) {
 				$this->log("autoloader", $e);
 			}
 		}
 	}
 
-	public function downloadFile(string $fname, string $downName = null) {
+	public function downloadFile($fname, $downName = null) {
 		if (is_null($downName))
 			$downName = $fname;
 		
@@ -73,26 +73,26 @@ final class autoloader {
 		$this->display = ob_get_clean();
 	}
 
-	public function getTemplate(string $name) {
+	public function getTemplate($name) {
 		$fname = $_SERVER['DOCUMENT_ROOT'] . \lib\autoloader::WWWROOT . "/" . \lib\autoloader::TEMPLATES . "/" . $name . ".phtml";
 		if (!is_file($fname))
 			return false;
 		\lib\csrf::wipe();
 		ob_start();
-		$ret = $this->require($fname);
+		$ret = $this->requireF($fname);
 		$this->display = ob_get_clean();
 		return $ret;
 	}
 
-	public static function getLayout(string $name) {
+	public static function getLayout($name) {
 		$fname = $_SERVER['DOCUMENT_ROOT'] . \lib\autoloader::WWWROOT . "/" . \lib\autoloader::TEMPLATES . "/" . $name . ".phtml";
 		if (!is_file($fname))
 			return false;
 		
-		return \lib\autoloader::require($fname);
+		return \lib\autoloader::requireF($fname);
 	}
 
-	function log(string $source, string $event) {
+	function log($source, $event) {
 		return array_push($this->log, [$source, $event]);
 	}
 
@@ -100,7 +100,7 @@ final class autoloader {
 		return $this->log;
 	}
 
-	private static function require(string $fname) {
+	private static function requireF($fname) {
 		if (!is_file($fname))
 			return false;
 

@@ -6,7 +6,7 @@ session_start();
 
 require_once "../lib/autoloader.php";
 
-new class {
+class index {
 
 	function __construct() {
 
@@ -52,7 +52,7 @@ new class {
 		exit();
 	}
 
-	function validate(Callable $callback) {
+	function validate($callback) {
 		try {
 			$validate = new \lib\validate($this->db);
 			if ($validate->failed) {
@@ -206,3 +206,5 @@ new class {
 		return $book;
 	}
 };
+
+new index;

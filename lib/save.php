@@ -17,7 +17,7 @@ class save {
         $this->class = $_SESSION['vars']['class'];
     }
 
-    function save(array $books, string $code) {
+    function save($books, $code) {
         $path = $this->target . "/" . $this->class;
 
         if (!is_dir($path))

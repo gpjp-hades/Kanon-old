@@ -9,7 +9,7 @@ class db {
         $this->load($fname);
     }
 
-    function load(string $fname) {
+    function load($fname) {
         if (!is_file($fname))
             return false;
         

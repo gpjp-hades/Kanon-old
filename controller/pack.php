@@ -89,7 +89,7 @@ class pack {
                         ];
                     } else {
                         foreach ($_SESSION['lists'] as $file) {
-                            $zip->addFile($file['path'], $file['class'] . "/" . str_replace(" ", "-", $file['name']) . ".list");
+                            $zip->addFile($file['path'], $file['class'] . "/" . str_replace(" ", "-", $file['name']) . ".gmz");
                         }
                         $zip->close();
                     }
