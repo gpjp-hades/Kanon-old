@@ -5,6 +5,18 @@ function checkIE () {
         ua.indexOf('Trident/') > -1 ||
         ua.indexOf('Edge/') > -1)
 }
+
+if ('serviceWorker' in navigator) {
+    console.log('CLIENT: service worker registration in progress.')
+    navigator.serviceWorker.register('http://localhost/kanon/service-worker.js').then((resolve, reject) => {
+        console.log('SW registered')
+    }).catch(e => {
+        console.log("SW failed", e)
+    })
+} else {
+    console.log('CLIENT: service worker is not supported.')
+}
+
 function send (type, value) {
     let form = $("#form")
     if (checkIE()) {
