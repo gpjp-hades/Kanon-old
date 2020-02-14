@@ -33,9 +33,9 @@ class validate {
 
         foreach ($this->region as $id => $region) {
             if ($region) {
-                $ret .= "<span class='text-success'>" . \lib\local::GRAPHICONS['ok'] . \lib\local::REGIONS[$id] . " (" . $this->countRegions[$id] . "/" .  \lib\local::MIN_REGIONS[$id] . ")</span><br />" . PHP_EOL;
+                $ret .= "<span class='text-success'>" . \lib\local::GRAPHICONS['ok'] . \lib\local::REGIONS[$id] . " (" . (array_key_exists($id, $this->countRegions) ? $this->countRegions[$id] : "0") . "/" .  \lib\local::MIN_REGIONS[$id] . ")</span><br />" . PHP_EOL;
             } else {
-                $ret .= "<strong class='text-danger'>" . \lib\local::GRAPHICONS['failed'] . \lib\local::REGIONS[$id] . " (" . $this->countRegions[$id] . "/" .  \lib\local::MIN_REGIONS[$id] . ")</strong><br />" . PHP_EOL;
+                $ret .= "<strong class='text-danger'>" . \lib\local::GRAPHICONS['failed'] . \lib\local::REGIONS[$id] . " (" . (array_key_exists($id, $this->countRegions) ? $this->countRegions[$id] : "0") . "/" .  \lib\local::MIN_REGIONS[$id] . ")</strong><br />" . PHP_EOL;
             }
         }
 
